@@ -143,3 +143,12 @@ export class EngineError extends Error {
     this.code = code;
   }
 }
+
+/**
+ * `joinedBeforeRound` for someone registered by name but not yet in the draw.
+ *
+ * `addPlayer` parks a newcomer here so every history helper reads them as
+ * absent until a join or substitute event dates their real entry. Standings
+ * skip them too: a name typed into the roster sheet is not a competitor.
+ */
+export const UNENTERED = Number.MAX_SAFE_INTEGER;

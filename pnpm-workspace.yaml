@@ -1,5 +1,9 @@
 packages:
   - 'packages/*'
   - 'apps/*'
+
+# esbuild's install script links its platform binary. It arrives as a vitest
+# dependency and is a deliberate allowlist entry, not a blanket opt-in: pnpm
+# blocks every other package's build scripts.
 allowBuilds:
-  esbuild: set this to true or false
+  esbuild: true

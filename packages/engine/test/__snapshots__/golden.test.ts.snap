@@ -1,0 +1,2385 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`the tournament, round by round > final leaderboard 1`] = `
+[
+  {
+    "diff": 34,
+    "played": 3,
+    "player": "Fajar",
+    "podiumEligible": false,
+    "points": 53,
+    "ppr": 17.6667,
+    "rank": 1,
+    "record": "3W 0D 0L",
+  },
+  {
+    "diff": 38,
+    "played": 8,
+    "player": "Bima",
+    "podiumEligible": true,
+    "points": 115,
+    "ppr": 14.375,
+    "rank": 2,
+    "record": "5W 0D 3L",
+  },
+  {
+    "diff": 16,
+    "played": 8,
+    "player": "Cahya",
+    "podiumEligible": true,
+    "points": 104,
+    "ppr": 13,
+    "rank": 3,
+    "record": "3W 2D 3L",
+  },
+  {
+    "diff": 4,
+    "played": 8,
+    "player": "Gita",
+    "podiumEligible": true,
+    "points": 98,
+    "ppr": 12.25,
+    "rank": 4,
+    "record": "2W 3D 3L",
+  },
+  {
+    "diff": -2,
+    "played": 6,
+    "player": "Dewi",
+    "podiumEligible": true,
+    "points": 71,
+    "ppr": 11.8333,
+    "rank": 5,
+    "record": "2W 1D 3L",
+  },
+  {
+    "diff": -6,
+    "played": 9,
+    "player": "Hana",
+    "podiumEligible": true,
+    "points": 105,
+    "ppr": 11.6667,
+    "rank": 6,
+    "record": "4W 3D 2L",
+  },
+  {
+    "diff": -14,
+    "played": 8,
+    "player": "Adi",
+    "podiumEligible": true,
+    "points": 89,
+    "ppr": 11.125,
+    "rank": 7,
+    "record": "1W 3D 4L",
+  },
+  {
+    "diff": -14,
+    "played": 5,
+    "player": "Budi",
+    "podiumEligible": true,
+    "points": 53,
+    "ppr": 10.6,
+    "rank": 8,
+    "record": "3W 1D 1L",
+  },
+  {
+    "diff": -6,
+    "played": 2,
+    "player": "Citra",
+    "podiumEligible": false,
+    "points": 21,
+    "ppr": 10.5,
+    "rank": 9,
+    "record": "1W 0D 1L",
+  },
+  {
+    "diff": -28,
+    "played": 9,
+    "player": "Indra",
+    "podiumEligible": true,
+    "points": 94,
+    "ppr": 10.4444,
+    "rank": 10,
+    "record": "2W 2D 5L",
+  },
+  {
+    "diff": -22,
+    "played": 6,
+    "player": "Eko",
+    "podiumEligible": true,
+    "points": 61,
+    "ppr": 10.1667,
+    "rank": 11,
+    "record": "2W 1D 3L",
+  },
+]
+`;
+
+exports[`the tournament, round by round > podium 1`] = `
+[
+  "Bima",
+  "Cahya",
+  "Gita",
+]
+`;
+
+exports[`the tournament, round by round > round 0 — eight starters, paired by the seeded shuffle 1`] = `
+{
+  "config": {
+    "courts": 2,
+    "format": "mexicano",
+    "name": "Golden Mexicano",
+    "podiumMinRoundsPct": 0.5,
+    "pointsPerMatch": 24,
+    "rankingMetric": "ppr",
+    "seed": "tanteo-golden",
+  },
+  "events": [],
+  "players": [
+    {
+      "id": "adi",
+      "joinedBeforeRound": 0,
+      "name": "Adi",
+      "status": "active",
+    },
+    {
+      "id": "bima",
+      "joinedBeforeRound": 0,
+      "name": "Bima",
+      "status": "active",
+    },
+    {
+      "id": "cahya",
+      "joinedBeforeRound": 0,
+      "name": "Cahya",
+      "status": "active",
+    },
+    {
+      "id": "dewi",
+      "joinedBeforeRound": 0,
+      "name": "Dewi",
+      "status": "active",
+    },
+    {
+      "id": "eko",
+      "joinedBeforeRound": 0,
+      "name": "Eko",
+      "status": "active",
+    },
+    {
+      "id": "gita",
+      "joinedBeforeRound": 0,
+      "name": "Gita",
+      "status": "active",
+    },
+    {
+      "id": "hana",
+      "joinedBeforeRound": 0,
+      "name": "Hana",
+      "status": "active",
+    },
+    {
+      "id": "indra",
+      "joinedBeforeRound": 0,
+      "name": "Indra",
+      "status": "active",
+    },
+  ],
+  "revision": 3,
+  "rng": {
+    "cursor": 7,
+    "seed": "tanteo-golden",
+  },
+  "rounds": [
+    {
+      "index": 0,
+      "matches": [
+        {
+          "court": 1,
+          "scoreA": 15,
+          "scoreB": 9,
+          "teamA": [
+            "cahya",
+            "gita",
+          ],
+          "teamB": [
+            "indra",
+            "adi",
+          ],
+        },
+        {
+          "court": 2,
+          "scoreA": 13,
+          "scoreB": 11,
+          "teamA": [
+            "eko",
+            "hana",
+          ],
+          "teamB": [
+            "bima",
+            "dewi",
+          ],
+        },
+      ],
+      "sitOuts": [],
+    },
+  ],
+}
+`;
+
+exports[`the tournament, round by round > round 1 — pairing now follows the standings 1`] = `
+{
+  "config": {
+    "courts": 2,
+    "format": "mexicano",
+    "name": "Golden Mexicano",
+    "podiumMinRoundsPct": 0.5,
+    "pointsPerMatch": 24,
+    "rankingMetric": "ppr",
+    "seed": "tanteo-golden",
+  },
+  "events": [],
+  "players": [
+    {
+      "id": "adi",
+      "joinedBeforeRound": 0,
+      "name": "Adi",
+      "status": "active",
+    },
+    {
+      "id": "bima",
+      "joinedBeforeRound": 0,
+      "name": "Bima",
+      "status": "active",
+    },
+    {
+      "id": "cahya",
+      "joinedBeforeRound": 0,
+      "name": "Cahya",
+      "status": "active",
+    },
+    {
+      "id": "dewi",
+      "joinedBeforeRound": 0,
+      "name": "Dewi",
+      "status": "active",
+    },
+    {
+      "id": "eko",
+      "joinedBeforeRound": 0,
+      "name": "Eko",
+      "status": "active",
+    },
+    {
+      "id": "gita",
+      "joinedBeforeRound": 0,
+      "name": "Gita",
+      "status": "active",
+    },
+    {
+      "id": "hana",
+      "joinedBeforeRound": 0,
+      "name": "Hana",
+      "status": "active",
+    },
+    {
+      "id": "indra",
+      "joinedBeforeRound": 0,
+      "name": "Indra",
+      "status": "active",
+    },
+  ],
+  "revision": 6,
+  "rng": {
+    "cursor": 7,
+    "seed": "tanteo-golden",
+  },
+  "rounds": [
+    {
+      "index": 0,
+      "matches": [
+        {
+          "court": 1,
+          "scoreA": 15,
+          "scoreB": 9,
+          "teamA": [
+            "cahya",
+            "gita",
+          ],
+          "teamB": [
+            "indra",
+            "adi",
+          ],
+        },
+        {
+          "court": 2,
+          "scoreA": 13,
+          "scoreB": 11,
+          "teamA": [
+            "eko",
+            "hana",
+          ],
+          "teamB": [
+            "bima",
+            "dewi",
+          ],
+        },
+      ],
+      "sitOuts": [],
+    },
+    {
+      "index": 1,
+      "matches": [
+        {
+          "court": 1,
+          "scoreA": 12,
+          "scoreB": 12,
+          "teamA": [
+            "cahya",
+            "hana",
+          ],
+          "teamB": [
+            "gita",
+            "eko",
+          ],
+        },
+        {
+          "court": 2,
+          "scoreA": 16,
+          "scoreB": 8,
+          "teamA": [
+            "bima",
+            "indra",
+          ],
+          "teamB": [
+            "dewi",
+            "adi",
+          ],
+        },
+      ],
+      "sitOuts": [],
+    },
+  ],
+}
+`;
+
+exports[`the tournament, round by round > round 2 1`] = `
+{
+  "config": {
+    "courts": 2,
+    "format": "mexicano",
+    "name": "Golden Mexicano",
+    "podiumMinRoundsPct": 0.5,
+    "pointsPerMatch": 24,
+    "rankingMetric": "ppr",
+    "seed": "tanteo-golden",
+  },
+  "events": [],
+  "players": [
+    {
+      "id": "adi",
+      "joinedBeforeRound": 0,
+      "name": "Adi",
+      "status": "active",
+    },
+    {
+      "id": "bima",
+      "joinedBeforeRound": 0,
+      "name": "Bima",
+      "status": "active",
+    },
+    {
+      "id": "cahya",
+      "joinedBeforeRound": 0,
+      "name": "Cahya",
+      "status": "active",
+    },
+    {
+      "id": "dewi",
+      "joinedBeforeRound": 0,
+      "name": "Dewi",
+      "status": "active",
+    },
+    {
+      "id": "eko",
+      "joinedBeforeRound": 0,
+      "name": "Eko",
+      "status": "active",
+    },
+    {
+      "id": "gita",
+      "joinedBeforeRound": 0,
+      "name": "Gita",
+      "status": "active",
+    },
+    {
+      "id": "hana",
+      "joinedBeforeRound": 0,
+      "name": "Hana",
+      "status": "active",
+    },
+    {
+      "id": "indra",
+      "joinedBeforeRound": 0,
+      "name": "Indra",
+      "status": "active",
+    },
+  ],
+  "revision": 9,
+  "rng": {
+    "cursor": 7,
+    "seed": "tanteo-golden",
+  },
+  "rounds": [
+    {
+      "index": 0,
+      "matches": [
+        {
+          "court": 1,
+          "scoreA": 15,
+          "scoreB": 9,
+          "teamA": [
+            "cahya",
+            "gita",
+          ],
+          "teamB": [
+            "indra",
+            "adi",
+          ],
+        },
+        {
+          "court": 2,
+          "scoreA": 13,
+          "scoreB": 11,
+          "teamA": [
+            "eko",
+            "hana",
+          ],
+          "teamB": [
+            "bima",
+            "dewi",
+          ],
+        },
+      ],
+      "sitOuts": [],
+    },
+    {
+      "index": 1,
+      "matches": [
+        {
+          "court": 1,
+          "scoreA": 12,
+          "scoreB": 12,
+          "teamA": [
+            "cahya",
+            "hana",
+          ],
+          "teamB": [
+            "gita",
+            "eko",
+          ],
+        },
+        {
+          "court": 2,
+          "scoreA": 16,
+          "scoreB": 8,
+          "teamA": [
+            "bima",
+            "indra",
+          ],
+          "teamB": [
+            "dewi",
+            "adi",
+          ],
+        },
+      ],
+      "sitOuts": [],
+    },
+    {
+      "index": 2,
+      "matches": [
+        {
+          "court": 1,
+          "scoreA": 14,
+          "scoreB": 10,
+          "teamA": [
+            "bima",
+            "eko",
+          ],
+          "teamB": [
+            "cahya",
+            "gita",
+          ],
+        },
+        {
+          "court": 2,
+          "scoreA": 11,
+          "scoreB": 13,
+          "teamA": [
+            "hana",
+            "adi",
+          ],
+          "teamB": [
+            "indra",
+            "dewi",
+          ],
+        },
+      ],
+      "sitOuts": [],
+    },
+  ],
+}
+`;
+
+exports[`the tournament, round by round > round 3 — the last round of the original eight 1`] = `
+{
+  "config": {
+    "courts": 2,
+    "format": "mexicano",
+    "name": "Golden Mexicano",
+    "podiumMinRoundsPct": 0.5,
+    "pointsPerMatch": 24,
+    "rankingMetric": "ppr",
+    "seed": "tanteo-golden",
+  },
+  "events": [],
+  "players": [
+    {
+      "id": "adi",
+      "joinedBeforeRound": 0,
+      "name": "Adi",
+      "status": "active",
+    },
+    {
+      "id": "bima",
+      "joinedBeforeRound": 0,
+      "name": "Bima",
+      "status": "active",
+    },
+    {
+      "id": "cahya",
+      "joinedBeforeRound": 0,
+      "name": "Cahya",
+      "status": "active",
+    },
+    {
+      "id": "dewi",
+      "joinedBeforeRound": 0,
+      "name": "Dewi",
+      "status": "active",
+    },
+    {
+      "id": "eko",
+      "joinedBeforeRound": 0,
+      "name": "Eko",
+      "status": "active",
+    },
+    {
+      "id": "gita",
+      "joinedBeforeRound": 0,
+      "name": "Gita",
+      "status": "active",
+    },
+    {
+      "id": "hana",
+      "joinedBeforeRound": 0,
+      "name": "Hana",
+      "status": "active",
+    },
+    {
+      "id": "indra",
+      "joinedBeforeRound": 0,
+      "name": "Indra",
+      "status": "active",
+    },
+  ],
+  "revision": 12,
+  "rng": {
+    "cursor": 7,
+    "seed": "tanteo-golden",
+  },
+  "rounds": [
+    {
+      "index": 0,
+      "matches": [
+        {
+          "court": 1,
+          "scoreA": 15,
+          "scoreB": 9,
+          "teamA": [
+            "cahya",
+            "gita",
+          ],
+          "teamB": [
+            "indra",
+            "adi",
+          ],
+        },
+        {
+          "court": 2,
+          "scoreA": 13,
+          "scoreB": 11,
+          "teamA": [
+            "eko",
+            "hana",
+          ],
+          "teamB": [
+            "bima",
+            "dewi",
+          ],
+        },
+      ],
+      "sitOuts": [],
+    },
+    {
+      "index": 1,
+      "matches": [
+        {
+          "court": 1,
+          "scoreA": 12,
+          "scoreB": 12,
+          "teamA": [
+            "cahya",
+            "hana",
+          ],
+          "teamB": [
+            "gita",
+            "eko",
+          ],
+        },
+        {
+          "court": 2,
+          "scoreA": 16,
+          "scoreB": 8,
+          "teamA": [
+            "bima",
+            "indra",
+          ],
+          "teamB": [
+            "dewi",
+            "adi",
+          ],
+        },
+      ],
+      "sitOuts": [],
+    },
+    {
+      "index": 2,
+      "matches": [
+        {
+          "court": 1,
+          "scoreA": 14,
+          "scoreB": 10,
+          "teamA": [
+            "bima",
+            "eko",
+          ],
+          "teamB": [
+            "cahya",
+            "gita",
+          ],
+        },
+        {
+          "court": 2,
+          "scoreA": 11,
+          "scoreB": 13,
+          "teamA": [
+            "hana",
+            "adi",
+          ],
+          "teamB": [
+            "indra",
+            "dewi",
+          ],
+        },
+      ],
+      "sitOuts": [],
+    },
+    {
+      "index": 3,
+      "matches": [
+        {
+          "court": 1,
+          "scoreA": 18,
+          "scoreB": 6,
+          "teamA": [
+            "bima",
+            "cahya",
+          ],
+          "teamB": [
+            "eko",
+            "indra",
+          ],
+        },
+        {
+          "court": 2,
+          "scoreA": 12,
+          "scoreB": 12,
+          "teamA": [
+            "gita",
+            "adi",
+          ],
+          "teamB": [
+            "hana",
+            "dewi",
+          ],
+        },
+      ],
+      "sitOuts": [],
+    },
+  ],
+}
+`;
+
+exports[`the tournament, round by round > round 4 — Budi joins with a middle seed, so somebody sits out 1`] = `
+{
+  "config": {
+    "courts": 2,
+    "format": "mexicano",
+    "name": "Golden Mexicano",
+    "podiumMinRoundsPct": 0.5,
+    "pointsPerMatch": 24,
+    "rankingMetric": "ppr",
+    "seed": "tanteo-golden",
+  },
+  "events": [
+    {
+      "beforeRound": 4,
+      "playerId": "budi",
+      "seed": "middle",
+      "type": "join",
+    },
+  ],
+  "players": [
+    {
+      "id": "adi",
+      "joinedBeforeRound": 0,
+      "name": "Adi",
+      "status": "active",
+    },
+    {
+      "id": "bima",
+      "joinedBeforeRound": 0,
+      "name": "Bima",
+      "status": "active",
+    },
+    {
+      "id": "cahya",
+      "joinedBeforeRound": 0,
+      "name": "Cahya",
+      "status": "active",
+    },
+    {
+      "id": "dewi",
+      "joinedBeforeRound": 0,
+      "name": "Dewi",
+      "status": "active",
+    },
+    {
+      "id": "eko",
+      "joinedBeforeRound": 0,
+      "name": "Eko",
+      "status": "active",
+    },
+    {
+      "id": "gita",
+      "joinedBeforeRound": 0,
+      "name": "Gita",
+      "status": "active",
+    },
+    {
+      "id": "hana",
+      "joinedBeforeRound": 0,
+      "name": "Hana",
+      "status": "active",
+    },
+    {
+      "id": "indra",
+      "joinedBeforeRound": 0,
+      "name": "Indra",
+      "status": "active",
+    },
+    {
+      "id": "budi",
+      "joinedBeforeRound": 4,
+      "name": "Budi",
+      "seed": "middle",
+      "status": "active",
+    },
+  ],
+  "revision": 17,
+  "rng": {
+    "cursor": 7,
+    "seed": "tanteo-golden",
+  },
+  "rounds": [
+    {
+      "index": 0,
+      "matches": [
+        {
+          "court": 1,
+          "scoreA": 15,
+          "scoreB": 9,
+          "teamA": [
+            "cahya",
+            "gita",
+          ],
+          "teamB": [
+            "indra",
+            "adi",
+          ],
+        },
+        {
+          "court": 2,
+          "scoreA": 13,
+          "scoreB": 11,
+          "teamA": [
+            "eko",
+            "hana",
+          ],
+          "teamB": [
+            "bima",
+            "dewi",
+          ],
+        },
+      ],
+      "sitOuts": [],
+    },
+    {
+      "index": 1,
+      "matches": [
+        {
+          "court": 1,
+          "scoreA": 12,
+          "scoreB": 12,
+          "teamA": [
+            "cahya",
+            "hana",
+          ],
+          "teamB": [
+            "gita",
+            "eko",
+          ],
+        },
+        {
+          "court": 2,
+          "scoreA": 16,
+          "scoreB": 8,
+          "teamA": [
+            "bima",
+            "indra",
+          ],
+          "teamB": [
+            "dewi",
+            "adi",
+          ],
+        },
+      ],
+      "sitOuts": [],
+    },
+    {
+      "index": 2,
+      "matches": [
+        {
+          "court": 1,
+          "scoreA": 14,
+          "scoreB": 10,
+          "teamA": [
+            "bima",
+            "eko",
+          ],
+          "teamB": [
+            "cahya",
+            "gita",
+          ],
+        },
+        {
+          "court": 2,
+          "scoreA": 11,
+          "scoreB": 13,
+          "teamA": [
+            "hana",
+            "adi",
+          ],
+          "teamB": [
+            "indra",
+            "dewi",
+          ],
+        },
+      ],
+      "sitOuts": [],
+    },
+    {
+      "index": 3,
+      "matches": [
+        {
+          "court": 1,
+          "scoreA": 18,
+          "scoreB": 6,
+          "teamA": [
+            "bima",
+            "cahya",
+          ],
+          "teamB": [
+            "eko",
+            "indra",
+          ],
+        },
+        {
+          "court": 2,
+          "scoreA": 12,
+          "scoreB": 12,
+          "teamA": [
+            "gita",
+            "adi",
+          ],
+          "teamB": [
+            "hana",
+            "dewi",
+          ],
+        },
+      ],
+      "sitOuts": [],
+    },
+    {
+      "index": 4,
+      "matches": [
+        {
+          "court": 1,
+          "scoreA": 13,
+          "scoreB": 11,
+          "teamA": [
+            "bima",
+            "budi",
+          ],
+          "teamB": [
+            "cahya",
+            "gita",
+          ],
+        },
+        {
+          "court": 2,
+          "scoreA": 17,
+          "scoreB": 7,
+          "teamA": [
+            "hana",
+            "dewi",
+          ],
+          "teamB": [
+            "eko",
+            "indra",
+          ],
+        },
+      ],
+      "sitOuts": [
+        "adi",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`the tournament, round by round > round 5 1`] = `
+{
+  "config": {
+    "courts": 2,
+    "format": "mexicano",
+    "name": "Golden Mexicano",
+    "podiumMinRoundsPct": 0.5,
+    "pointsPerMatch": 24,
+    "rankingMetric": "ppr",
+    "seed": "tanteo-golden",
+  },
+  "events": [
+    {
+      "beforeRound": 4,
+      "playerId": "budi",
+      "seed": "middle",
+      "type": "join",
+    },
+  ],
+  "players": [
+    {
+      "id": "adi",
+      "joinedBeforeRound": 0,
+      "name": "Adi",
+      "status": "active",
+    },
+    {
+      "id": "bima",
+      "joinedBeforeRound": 0,
+      "name": "Bima",
+      "status": "active",
+    },
+    {
+      "id": "cahya",
+      "joinedBeforeRound": 0,
+      "name": "Cahya",
+      "status": "active",
+    },
+    {
+      "id": "dewi",
+      "joinedBeforeRound": 0,
+      "name": "Dewi",
+      "status": "active",
+    },
+    {
+      "id": "eko",
+      "joinedBeforeRound": 0,
+      "name": "Eko",
+      "status": "active",
+    },
+    {
+      "id": "gita",
+      "joinedBeforeRound": 0,
+      "name": "Gita",
+      "status": "active",
+    },
+    {
+      "id": "hana",
+      "joinedBeforeRound": 0,
+      "name": "Hana",
+      "status": "active",
+    },
+    {
+      "id": "indra",
+      "joinedBeforeRound": 0,
+      "name": "Indra",
+      "status": "active",
+    },
+    {
+      "id": "budi",
+      "joinedBeforeRound": 4,
+      "name": "Budi",
+      "seed": "middle",
+      "status": "active",
+    },
+  ],
+  "revision": 20,
+  "rng": {
+    "cursor": 7,
+    "seed": "tanteo-golden",
+  },
+  "rounds": [
+    {
+      "index": 0,
+      "matches": [
+        {
+          "court": 1,
+          "scoreA": 15,
+          "scoreB": 9,
+          "teamA": [
+            "cahya",
+            "gita",
+          ],
+          "teamB": [
+            "indra",
+            "adi",
+          ],
+        },
+        {
+          "court": 2,
+          "scoreA": 13,
+          "scoreB": 11,
+          "teamA": [
+            "eko",
+            "hana",
+          ],
+          "teamB": [
+            "bima",
+            "dewi",
+          ],
+        },
+      ],
+      "sitOuts": [],
+    },
+    {
+      "index": 1,
+      "matches": [
+        {
+          "court": 1,
+          "scoreA": 12,
+          "scoreB": 12,
+          "teamA": [
+            "cahya",
+            "hana",
+          ],
+          "teamB": [
+            "gita",
+            "eko",
+          ],
+        },
+        {
+          "court": 2,
+          "scoreA": 16,
+          "scoreB": 8,
+          "teamA": [
+            "bima",
+            "indra",
+          ],
+          "teamB": [
+            "dewi",
+            "adi",
+          ],
+        },
+      ],
+      "sitOuts": [],
+    },
+    {
+      "index": 2,
+      "matches": [
+        {
+          "court": 1,
+          "scoreA": 14,
+          "scoreB": 10,
+          "teamA": [
+            "bima",
+            "eko",
+          ],
+          "teamB": [
+            "cahya",
+            "gita",
+          ],
+        },
+        {
+          "court": 2,
+          "scoreA": 11,
+          "scoreB": 13,
+          "teamA": [
+            "hana",
+            "adi",
+          ],
+          "teamB": [
+            "indra",
+            "dewi",
+          ],
+        },
+      ],
+      "sitOuts": [],
+    },
+    {
+      "index": 3,
+      "matches": [
+        {
+          "court": 1,
+          "scoreA": 18,
+          "scoreB": 6,
+          "teamA": [
+            "bima",
+            "cahya",
+          ],
+          "teamB": [
+            "eko",
+            "indra",
+          ],
+        },
+        {
+          "court": 2,
+          "scoreA": 12,
+          "scoreB": 12,
+          "teamA": [
+            "gita",
+            "adi",
+          ],
+          "teamB": [
+            "hana",
+            "dewi",
+          ],
+        },
+      ],
+      "sitOuts": [],
+    },
+    {
+      "index": 4,
+      "matches": [
+        {
+          "court": 1,
+          "scoreA": 13,
+          "scoreB": 11,
+          "teamA": [
+            "bima",
+            "budi",
+          ],
+          "teamB": [
+            "cahya",
+            "gita",
+          ],
+        },
+        {
+          "court": 2,
+          "scoreA": 17,
+          "scoreB": 7,
+          "teamA": [
+            "hana",
+            "dewi",
+          ],
+          "teamB": [
+            "eko",
+            "indra",
+          ],
+        },
+      ],
+      "sitOuts": [
+        "adi",
+      ],
+    },
+    {
+      "index": 5,
+      "matches": [
+        {
+          "court": 1,
+          "scoreA": 10,
+          "scoreB": 14,
+          "teamA": [
+            "cahya",
+            "dewi",
+          ],
+          "teamB": [
+            "hana",
+            "budi",
+          ],
+        },
+        {
+          "court": 2,
+          "scoreA": 15,
+          "scoreB": 9,
+          "teamA": [
+            "gita",
+            "adi",
+          ],
+          "teamB": [
+            "eko",
+            "indra",
+          ],
+        },
+      ],
+      "sitOuts": [
+        "bima",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`the tournament, round by round > round 6 — Dewi leaves, and Fajar takes over Eko’s slot 1`] = `
+{
+  "config": {
+    "courts": 2,
+    "format": "mexicano",
+    "name": "Golden Mexicano",
+    "podiumMinRoundsPct": 0.5,
+    "pointsPerMatch": 24,
+    "rankingMetric": "ppr",
+    "seed": "tanteo-golden",
+  },
+  "events": [
+    {
+      "beforeRound": 4,
+      "playerId": "budi",
+      "seed": "middle",
+      "type": "join",
+    },
+    {
+      "beforeRound": 6,
+      "playerId": "dewi",
+      "type": "leave",
+    },
+    {
+      "beforeRound": 6,
+      "incomingId": "fajar",
+      "outgoingId": "eko",
+      "type": "substitute",
+    },
+  ],
+  "players": [
+    {
+      "id": "adi",
+      "joinedBeforeRound": 0,
+      "name": "Adi",
+      "status": "active",
+    },
+    {
+      "id": "bima",
+      "joinedBeforeRound": 0,
+      "name": "Bima",
+      "status": "active",
+    },
+    {
+      "id": "cahya",
+      "joinedBeforeRound": 0,
+      "name": "Cahya",
+      "status": "active",
+    },
+    {
+      "id": "dewi",
+      "joinedBeforeRound": 0,
+      "name": "Dewi",
+      "status": "left",
+    },
+    {
+      "id": "eko",
+      "joinedBeforeRound": 0,
+      "name": "Eko",
+      "replacedBy": "fajar",
+      "status": "left",
+    },
+    {
+      "id": "gita",
+      "joinedBeforeRound": 0,
+      "name": "Gita",
+      "status": "active",
+    },
+    {
+      "id": "hana",
+      "joinedBeforeRound": 0,
+      "name": "Hana",
+      "status": "active",
+    },
+    {
+      "id": "indra",
+      "joinedBeforeRound": 0,
+      "name": "Indra",
+      "status": "active",
+    },
+    {
+      "id": "budi",
+      "joinedBeforeRound": 4,
+      "name": "Budi",
+      "seed": "middle",
+      "status": "active",
+    },
+    {
+      "id": "fajar",
+      "joinedBeforeRound": 6,
+      "name": "Fajar",
+      "replaces": "eko",
+      "status": "active",
+    },
+  ],
+  "revision": 26,
+  "rng": {
+    "cursor": 7,
+    "seed": "tanteo-golden",
+  },
+  "rounds": [
+    {
+      "index": 0,
+      "matches": [
+        {
+          "court": 1,
+          "scoreA": 15,
+          "scoreB": 9,
+          "teamA": [
+            "cahya",
+            "gita",
+          ],
+          "teamB": [
+            "indra",
+            "adi",
+          ],
+        },
+        {
+          "court": 2,
+          "scoreA": 13,
+          "scoreB": 11,
+          "teamA": [
+            "eko",
+            "hana",
+          ],
+          "teamB": [
+            "bima",
+            "dewi",
+          ],
+        },
+      ],
+      "sitOuts": [],
+    },
+    {
+      "index": 1,
+      "matches": [
+        {
+          "court": 1,
+          "scoreA": 12,
+          "scoreB": 12,
+          "teamA": [
+            "cahya",
+            "hana",
+          ],
+          "teamB": [
+            "gita",
+            "eko",
+          ],
+        },
+        {
+          "court": 2,
+          "scoreA": 16,
+          "scoreB": 8,
+          "teamA": [
+            "bima",
+            "indra",
+          ],
+          "teamB": [
+            "dewi",
+            "adi",
+          ],
+        },
+      ],
+      "sitOuts": [],
+    },
+    {
+      "index": 2,
+      "matches": [
+        {
+          "court": 1,
+          "scoreA": 14,
+          "scoreB": 10,
+          "teamA": [
+            "bima",
+            "eko",
+          ],
+          "teamB": [
+            "cahya",
+            "gita",
+          ],
+        },
+        {
+          "court": 2,
+          "scoreA": 11,
+          "scoreB": 13,
+          "teamA": [
+            "hana",
+            "adi",
+          ],
+          "teamB": [
+            "indra",
+            "dewi",
+          ],
+        },
+      ],
+      "sitOuts": [],
+    },
+    {
+      "index": 3,
+      "matches": [
+        {
+          "court": 1,
+          "scoreA": 18,
+          "scoreB": 6,
+          "teamA": [
+            "bima",
+            "cahya",
+          ],
+          "teamB": [
+            "eko",
+            "indra",
+          ],
+        },
+        {
+          "court": 2,
+          "scoreA": 12,
+          "scoreB": 12,
+          "teamA": [
+            "gita",
+            "adi",
+          ],
+          "teamB": [
+            "hana",
+            "dewi",
+          ],
+        },
+      ],
+      "sitOuts": [],
+    },
+    {
+      "index": 4,
+      "matches": [
+        {
+          "court": 1,
+          "scoreA": 13,
+          "scoreB": 11,
+          "teamA": [
+            "bima",
+            "budi",
+          ],
+          "teamB": [
+            "cahya",
+            "gita",
+          ],
+        },
+        {
+          "court": 2,
+          "scoreA": 17,
+          "scoreB": 7,
+          "teamA": [
+            "hana",
+            "dewi",
+          ],
+          "teamB": [
+            "eko",
+            "indra",
+          ],
+        },
+      ],
+      "sitOuts": [
+        "adi",
+      ],
+    },
+    {
+      "index": 5,
+      "matches": [
+        {
+          "court": 1,
+          "scoreA": 10,
+          "scoreB": 14,
+          "teamA": [
+            "cahya",
+            "dewi",
+          ],
+          "teamB": [
+            "hana",
+            "budi",
+          ],
+        },
+        {
+          "court": 2,
+          "scoreA": 15,
+          "scoreB": 9,
+          "teamA": [
+            "gita",
+            "adi",
+          ],
+          "teamB": [
+            "eko",
+            "indra",
+          ],
+        },
+      ],
+      "sitOuts": [
+        "bima",
+      ],
+    },
+    {
+      "index": 6,
+      "matches": [
+        {
+          "court": 1,
+          "scoreA": 24,
+          "scoreB": 0,
+          "teamA": [
+            "bima",
+            "fajar",
+          ],
+          "teamB": [
+            "budi",
+            "hana",
+          ],
+        },
+        {
+          "court": 2,
+          "scoreA": 12,
+          "scoreB": 12,
+          "teamA": [
+            "cahya",
+            "indra",
+          ],
+          "teamB": [
+            "gita",
+            "adi",
+          ],
+        },
+      ],
+      "sitOuts": [],
+    },
+  ],
+}
+`;
+
+exports[`the tournament, round by round > round 7 — Citra joins, no seed 1`] = `
+{
+  "config": {
+    "courts": 2,
+    "format": "mexicano",
+    "name": "Golden Mexicano",
+    "podiumMinRoundsPct": 0.5,
+    "pointsPerMatch": 24,
+    "rankingMetric": "ppr",
+    "seed": "tanteo-golden",
+  },
+  "events": [
+    {
+      "beforeRound": 4,
+      "playerId": "budi",
+      "seed": "middle",
+      "type": "join",
+    },
+    {
+      "beforeRound": 6,
+      "playerId": "dewi",
+      "type": "leave",
+    },
+    {
+      "beforeRound": 6,
+      "incomingId": "fajar",
+      "outgoingId": "eko",
+      "type": "substitute",
+    },
+    {
+      "beforeRound": 7,
+      "playerId": "citra",
+      "type": "join",
+    },
+  ],
+  "players": [
+    {
+      "id": "adi",
+      "joinedBeforeRound": 0,
+      "name": "Adi",
+      "status": "active",
+    },
+    {
+      "id": "bima",
+      "joinedBeforeRound": 0,
+      "name": "Bima",
+      "status": "active",
+    },
+    {
+      "id": "cahya",
+      "joinedBeforeRound": 0,
+      "name": "Cahya",
+      "status": "active",
+    },
+    {
+      "id": "dewi",
+      "joinedBeforeRound": 0,
+      "name": "Dewi",
+      "status": "left",
+    },
+    {
+      "id": "eko",
+      "joinedBeforeRound": 0,
+      "name": "Eko",
+      "replacedBy": "fajar",
+      "status": "left",
+    },
+    {
+      "id": "gita",
+      "joinedBeforeRound": 0,
+      "name": "Gita",
+      "status": "active",
+    },
+    {
+      "id": "hana",
+      "joinedBeforeRound": 0,
+      "name": "Hana",
+      "status": "active",
+    },
+    {
+      "id": "indra",
+      "joinedBeforeRound": 0,
+      "name": "Indra",
+      "status": "active",
+    },
+    {
+      "id": "budi",
+      "joinedBeforeRound": 4,
+      "name": "Budi",
+      "seed": "middle",
+      "status": "active",
+    },
+    {
+      "id": "fajar",
+      "joinedBeforeRound": 6,
+      "name": "Fajar",
+      "replaces": "eko",
+      "status": "active",
+    },
+    {
+      "id": "citra",
+      "joinedBeforeRound": 7,
+      "name": "Citra",
+      "status": "active",
+    },
+  ],
+  "revision": 31,
+  "rng": {
+    "cursor": 7,
+    "seed": "tanteo-golden",
+  },
+  "rounds": [
+    {
+      "index": 0,
+      "matches": [
+        {
+          "court": 1,
+          "scoreA": 15,
+          "scoreB": 9,
+          "teamA": [
+            "cahya",
+            "gita",
+          ],
+          "teamB": [
+            "indra",
+            "adi",
+          ],
+        },
+        {
+          "court": 2,
+          "scoreA": 13,
+          "scoreB": 11,
+          "teamA": [
+            "eko",
+            "hana",
+          ],
+          "teamB": [
+            "bima",
+            "dewi",
+          ],
+        },
+      ],
+      "sitOuts": [],
+    },
+    {
+      "index": 1,
+      "matches": [
+        {
+          "court": 1,
+          "scoreA": 12,
+          "scoreB": 12,
+          "teamA": [
+            "cahya",
+            "hana",
+          ],
+          "teamB": [
+            "gita",
+            "eko",
+          ],
+        },
+        {
+          "court": 2,
+          "scoreA": 16,
+          "scoreB": 8,
+          "teamA": [
+            "bima",
+            "indra",
+          ],
+          "teamB": [
+            "dewi",
+            "adi",
+          ],
+        },
+      ],
+      "sitOuts": [],
+    },
+    {
+      "index": 2,
+      "matches": [
+        {
+          "court": 1,
+          "scoreA": 14,
+          "scoreB": 10,
+          "teamA": [
+            "bima",
+            "eko",
+          ],
+          "teamB": [
+            "cahya",
+            "gita",
+          ],
+        },
+        {
+          "court": 2,
+          "scoreA": 11,
+          "scoreB": 13,
+          "teamA": [
+            "hana",
+            "adi",
+          ],
+          "teamB": [
+            "indra",
+            "dewi",
+          ],
+        },
+      ],
+      "sitOuts": [],
+    },
+    {
+      "index": 3,
+      "matches": [
+        {
+          "court": 1,
+          "scoreA": 18,
+          "scoreB": 6,
+          "teamA": [
+            "bima",
+            "cahya",
+          ],
+          "teamB": [
+            "eko",
+            "indra",
+          ],
+        },
+        {
+          "court": 2,
+          "scoreA": 12,
+          "scoreB": 12,
+          "teamA": [
+            "gita",
+            "adi",
+          ],
+          "teamB": [
+            "hana",
+            "dewi",
+          ],
+        },
+      ],
+      "sitOuts": [],
+    },
+    {
+      "index": 4,
+      "matches": [
+        {
+          "court": 1,
+          "scoreA": 13,
+          "scoreB": 11,
+          "teamA": [
+            "bima",
+            "budi",
+          ],
+          "teamB": [
+            "cahya",
+            "gita",
+          ],
+        },
+        {
+          "court": 2,
+          "scoreA": 17,
+          "scoreB": 7,
+          "teamA": [
+            "hana",
+            "dewi",
+          ],
+          "teamB": [
+            "eko",
+            "indra",
+          ],
+        },
+      ],
+      "sitOuts": [
+        "adi",
+      ],
+    },
+    {
+      "index": 5,
+      "matches": [
+        {
+          "court": 1,
+          "scoreA": 10,
+          "scoreB": 14,
+          "teamA": [
+            "cahya",
+            "dewi",
+          ],
+          "teamB": [
+            "hana",
+            "budi",
+          ],
+        },
+        {
+          "court": 2,
+          "scoreA": 15,
+          "scoreB": 9,
+          "teamA": [
+            "gita",
+            "adi",
+          ],
+          "teamB": [
+            "eko",
+            "indra",
+          ],
+        },
+      ],
+      "sitOuts": [
+        "bima",
+      ],
+    },
+    {
+      "index": 6,
+      "matches": [
+        {
+          "court": 1,
+          "scoreA": 24,
+          "scoreB": 0,
+          "teamA": [
+            "bima",
+            "fajar",
+          ],
+          "teamB": [
+            "budi",
+            "hana",
+          ],
+        },
+        {
+          "court": 2,
+          "scoreA": 12,
+          "scoreB": 12,
+          "teamA": [
+            "cahya",
+            "indra",
+          ],
+          "teamB": [
+            "gita",
+            "adi",
+          ],
+        },
+      ],
+      "sitOuts": [],
+    },
+    {
+      "index": 7,
+      "matches": [
+        {
+          "court": 1,
+          "scoreA": 13,
+          "scoreB": 11,
+          "teamA": [
+            "fajar",
+            "citra",
+          ],
+          "teamB": [
+            "bima",
+            "gita",
+          ],
+        },
+        {
+          "court": 2,
+          "scoreA": 14,
+          "scoreB": 10,
+          "teamA": [
+            "hana",
+            "budi",
+          ],
+          "teamB": [
+            "adi",
+            "indra",
+          ],
+        },
+      ],
+      "sitOuts": [
+        "cahya",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`the tournament, round by round > round 8 — last round 1`] = `
+{
+  "config": {
+    "courts": 2,
+    "format": "mexicano",
+    "name": "Golden Mexicano",
+    "podiumMinRoundsPct": 0.5,
+    "pointsPerMatch": 24,
+    "rankingMetric": "ppr",
+    "seed": "tanteo-golden",
+  },
+  "events": [
+    {
+      "beforeRound": 4,
+      "playerId": "budi",
+      "seed": "middle",
+      "type": "join",
+    },
+    {
+      "beforeRound": 6,
+      "playerId": "dewi",
+      "type": "leave",
+    },
+    {
+      "beforeRound": 6,
+      "incomingId": "fajar",
+      "outgoingId": "eko",
+      "type": "substitute",
+    },
+    {
+      "beforeRound": 7,
+      "playerId": "citra",
+      "type": "join",
+    },
+  ],
+  "players": [
+    {
+      "id": "adi",
+      "joinedBeforeRound": 0,
+      "name": "Adi",
+      "status": "active",
+    },
+    {
+      "id": "bima",
+      "joinedBeforeRound": 0,
+      "name": "Bima",
+      "status": "active",
+    },
+    {
+      "id": "cahya",
+      "joinedBeforeRound": 0,
+      "name": "Cahya",
+      "status": "active",
+    },
+    {
+      "id": "dewi",
+      "joinedBeforeRound": 0,
+      "name": "Dewi",
+      "status": "left",
+    },
+    {
+      "id": "eko",
+      "joinedBeforeRound": 0,
+      "name": "Eko",
+      "replacedBy": "fajar",
+      "status": "left",
+    },
+    {
+      "id": "gita",
+      "joinedBeforeRound": 0,
+      "name": "Gita",
+      "status": "active",
+    },
+    {
+      "id": "hana",
+      "joinedBeforeRound": 0,
+      "name": "Hana",
+      "status": "active",
+    },
+    {
+      "id": "indra",
+      "joinedBeforeRound": 0,
+      "name": "Indra",
+      "status": "active",
+    },
+    {
+      "id": "budi",
+      "joinedBeforeRound": 4,
+      "name": "Budi",
+      "seed": "middle",
+      "status": "active",
+    },
+    {
+      "id": "fajar",
+      "joinedBeforeRound": 6,
+      "name": "Fajar",
+      "replaces": "eko",
+      "status": "active",
+    },
+    {
+      "id": "citra",
+      "joinedBeforeRound": 7,
+      "name": "Citra",
+      "status": "active",
+    },
+  ],
+  "revision": 34,
+  "rng": {
+    "cursor": 7,
+    "seed": "tanteo-golden",
+  },
+  "rounds": [
+    {
+      "index": 0,
+      "matches": [
+        {
+          "court": 1,
+          "scoreA": 15,
+          "scoreB": 9,
+          "teamA": [
+            "cahya",
+            "gita",
+          ],
+          "teamB": [
+            "indra",
+            "adi",
+          ],
+        },
+        {
+          "court": 2,
+          "scoreA": 13,
+          "scoreB": 11,
+          "teamA": [
+            "eko",
+            "hana",
+          ],
+          "teamB": [
+            "bima",
+            "dewi",
+          ],
+        },
+      ],
+      "sitOuts": [],
+    },
+    {
+      "index": 1,
+      "matches": [
+        {
+          "court": 1,
+          "scoreA": 12,
+          "scoreB": 12,
+          "teamA": [
+            "cahya",
+            "hana",
+          ],
+          "teamB": [
+            "gita",
+            "eko",
+          ],
+        },
+        {
+          "court": 2,
+          "scoreA": 16,
+          "scoreB": 8,
+          "teamA": [
+            "bima",
+            "indra",
+          ],
+          "teamB": [
+            "dewi",
+            "adi",
+          ],
+        },
+      ],
+      "sitOuts": [],
+    },
+    {
+      "index": 2,
+      "matches": [
+        {
+          "court": 1,
+          "scoreA": 14,
+          "scoreB": 10,
+          "teamA": [
+            "bima",
+            "eko",
+          ],
+          "teamB": [
+            "cahya",
+            "gita",
+          ],
+        },
+        {
+          "court": 2,
+          "scoreA": 11,
+          "scoreB": 13,
+          "teamA": [
+            "hana",
+            "adi",
+          ],
+          "teamB": [
+            "indra",
+            "dewi",
+          ],
+        },
+      ],
+      "sitOuts": [],
+    },
+    {
+      "index": 3,
+      "matches": [
+        {
+          "court": 1,
+          "scoreA": 18,
+          "scoreB": 6,
+          "teamA": [
+            "bima",
+            "cahya",
+          ],
+          "teamB": [
+            "eko",
+            "indra",
+          ],
+        },
+        {
+          "court": 2,
+          "scoreA": 12,
+          "scoreB": 12,
+          "teamA": [
+            "gita",
+            "adi",
+          ],
+          "teamB": [
+            "hana",
+            "dewi",
+          ],
+        },
+      ],
+      "sitOuts": [],
+    },
+    {
+      "index": 4,
+      "matches": [
+        {
+          "court": 1,
+          "scoreA": 13,
+          "scoreB": 11,
+          "teamA": [
+            "bima",
+            "budi",
+          ],
+          "teamB": [
+            "cahya",
+            "gita",
+          ],
+        },
+        {
+          "court": 2,
+          "scoreA": 17,
+          "scoreB": 7,
+          "teamA": [
+            "hana",
+            "dewi",
+          ],
+          "teamB": [
+            "eko",
+            "indra",
+          ],
+        },
+      ],
+      "sitOuts": [
+        "adi",
+      ],
+    },
+    {
+      "index": 5,
+      "matches": [
+        {
+          "court": 1,
+          "scoreA": 10,
+          "scoreB": 14,
+          "teamA": [
+            "cahya",
+            "dewi",
+          ],
+          "teamB": [
+            "hana",
+            "budi",
+          ],
+        },
+        {
+          "court": 2,
+          "scoreA": 15,
+          "scoreB": 9,
+          "teamA": [
+            "gita",
+            "adi",
+          ],
+          "teamB": [
+            "eko",
+            "indra",
+          ],
+        },
+      ],
+      "sitOuts": [
+        "bima",
+      ],
+    },
+    {
+      "index": 6,
+      "matches": [
+        {
+          "court": 1,
+          "scoreA": 24,
+          "scoreB": 0,
+          "teamA": [
+            "bima",
+            "fajar",
+          ],
+          "teamB": [
+            "budi",
+            "hana",
+          ],
+        },
+        {
+          "court": 2,
+          "scoreA": 12,
+          "scoreB": 12,
+          "teamA": [
+            "cahya",
+            "indra",
+          ],
+          "teamB": [
+            "gita",
+            "adi",
+          ],
+        },
+      ],
+      "sitOuts": [],
+    },
+    {
+      "index": 7,
+      "matches": [
+        {
+          "court": 1,
+          "scoreA": 13,
+          "scoreB": 11,
+          "teamA": [
+            "fajar",
+            "citra",
+          ],
+          "teamB": [
+            "bima",
+            "gita",
+          ],
+        },
+        {
+          "court": 2,
+          "scoreA": 14,
+          "scoreB": 10,
+          "teamA": [
+            "hana",
+            "budi",
+          ],
+          "teamB": [
+            "adi",
+            "indra",
+          ],
+        },
+      ],
+      "sitOuts": [
+        "cahya",
+      ],
+    },
+    {
+      "index": 8,
+      "matches": [
+        {
+          "court": 1,
+          "scoreA": 16,
+          "scoreB": 8,
+          "teamA": [
+            "fajar",
+            "cahya",
+          ],
+          "teamB": [
+            "bima",
+            "citra",
+          ],
+        },
+        {
+          "court": 2,
+          "scoreA": 12,
+          "scoreB": 12,
+          "teamA": [
+            "hana",
+            "budi",
+          ],
+          "teamB": [
+            "adi",
+            "indra",
+          ],
+        },
+      ],
+      "sitOuts": [
+        "gita",
+      ],
+    },
+  ],
+}
+`;
