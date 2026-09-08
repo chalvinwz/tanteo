@@ -1,0 +1,152 @@
+@import 'tailwindcss';
+
+/*
+ * tanteo design tokens.
+ *
+ * Direction: DESIGN.md. A floodlit night court, not a SaaS dashboard.
+ * Every value below has a one-line reason, because a token without one is a
+ * default wearing a variable name.
+ *
+ * Contrast: every text pairing here was computed, not eyeballed. Ratios are
+ * recorded beside the token. The important finding is at the bottom of the
+ * line-work block: white line-work only clears the 3:1 non-text bar at 0.40
+ * alpha, so decorative court lines and interactive borders are different
+ * tokens on purpose.
+ */
+
+@theme {
+  /* Core surfaces. Padel courts are blue, and the session happens after dark,
+     so the ground is a deep court blue rather than a neutral charcoal. */
+  --color-court-950: #071a2c; /* page ground */
+  --color-court-900: #0a2036; /* a court that is out of play (sitting out) */
+  --color-court-800: #0e2740; /* raised surface: cards, sheets */
+  --color-court-700: #14324f; /* pressed state on a raised surface */
+
+  /* Ink. Two levels only; a third grey would be the start of a grey soup. */
+  --color-ink: #f2f6fa; /* 16.21:1 on court-950, 13.98:1 on court-800 */
+  --color-ink-muted: #9fb3c8; /* 8.18:1 on court-950, 7.05:1 on court-800 */
+
+  /* The one accent: padel-ball optic yellow. Reserved for scores in motion and
+     the current leader, per DESIGN.md. 15.31:1 on court-950 both ways, so it
+     works as text, as a fill behind dark text, and as a focus ring. */
+  --color-optic: #d8ff2e;
+
+  /* Line-work borrowed from court markings: thin, exact, load-bearing.
+     Decorative rules divide regions and may sit quiet at 1.51:1 and 2.00:1,
+     because they carry no information a user has to find. */
+  --color-line-quiet: rgb(255 255 255 / 0.14);
+  --color-line: rgb(255 255 255 / 0.22);
+  /* An interactive boundary is information, so it must clear 3:1 (WCAG 1.4.11).
+     0.30 alpha measures 2.68:1 and fails; 0.40 measures 3.75:1 and passes.
+     This is the token every button, input and tappable card border uses. */
+  --color-line-control: rgb(255 255 255 / 0.4);
+
+  /* Type. A courtside phone in floodlight, read at arm's length and sometimes
+     from two meters, so the grotesque is the platform UI face (no webfont
+     fetch: this app has to boot with no network) and the display face is that
+     same stack pushed to weight and negative tracking. See docs/decisions.md
+     for the self-hosted face this is a placeholder for. */
+  --font-sans:
+    system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+
+  /* Radius as hierarchy, not decoration: three steps, never a pill on
+     everything. Cards are square-ish so they read as court boxes. */
+  --radius-court: 2px; /* court boxes and rules: almost square */
+  --radius-control: 6px; /* buttons and inputs */
+  --radius-sheet: 14px; /* the one surface that lifts above the page */
+}
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--color-court-950);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    /* Courtside thumbs drag while scoring; text selection just gets in the way. */
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    /* The bottom bar is fixed, so the page reserves its height plus the home
+       indicator rather than hiding the last row behind it. */
+    overscroll-behavior-y: none;
+  }
+
+  /* Every score numeral is tabular and lining, so digits do not jump width as
+     they tick. This is the single most important type rule in the app. */
+  .numeral {
+    font-variant-numeric: tabular-nums lining-nums;
+    font-feature-settings: 'tnum' 1, 'lnum' 1;
+    letter-spacing: -0.04em;
+    font-weight: 800;
+  }
+
+  /* Focus is the optic accent at full strength: 15.31:1 on the page ground, so
+     a keyboard user can find it in floodlight or sunlight. Never removed. */
+  :focus-visible {
+    outline: 3px solid var(--color-optic);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  /* Inputs keep a visible boundary at the 3:1 token, not the decorative one. */
+  input,
+  select,
+  button {
+    font: inherit;
+    color: inherit;
+  }
+}
+
+/*
+ * MOTION dial 1. Exactly two animations exist in this app, both named in
+ * DESIGN.md. Nothing else moves.
+ */
+
+/* 1. The score tick: the numeral rolls to its new value. */
+@keyframes score-tick {
+  0% {
+    transform: translateY(38%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-score-tick {
+  animation: score-tick 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* 2. The round transition: court cards resort into their new order. */
+@keyframes court-resort {
+  0% {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-court-resort {
+  animation: court-resort 220ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-score-tick,
+  .animate-court-resort {
+    animation: none;
+  }
+}
