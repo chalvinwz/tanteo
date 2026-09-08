@@ -15,8 +15,12 @@ import { useTournament } from '../state.js';
  * The front door: what is already running, and the one way to start something.
  *
  * ENERGY 1. This screen is a list and a button. The optic accent appears once,
- * on the action that starts an evening, and nowhere else — the scoreboard is
+ * on the action that starts an evening, and nowhere else; the scoreboard is
  * where the colour gets spent.
+ *
+ * The shell resolves blocked storage, boot loading and boot failure before any
+ * screen mounts, so what is left to handle here is this screen's own two
+ * states: an empty list, and an open or discard that did not go through.
  */
 
 function formatLabel(format: Format): string {
@@ -46,6 +50,11 @@ function enteredCount(state: TournamentState): number {
   return state.players.filter((player) => player.joinedBeforeRound !== UNENTERED).length;
 }
 
+/** An untitled tournament still has to be findable, so the format stands in. */
+function headingFor(state: TournamentState): string {
+  return state.config.name.trim() || formatLabel(state.config.format);
+}
+
 function SavedCard({
   stored,
   onOpen,
@@ -59,8 +68,8 @@ function SavedCard({
   const nameId = `${base}-name`;
   const discardId = `${base}-discard`;
   const { state } = stored;
-  // An untitled tournament still has to be findable in the list, so the format
-  // stands in as the heading and then drops out of the meta row beneath it.
+  // When the format is carrying the heading it drops out of the meta row, so
+  // the card never says "Americano" twice.
   const named = state.config.name.trim();
 
   return (
@@ -71,8 +80,11 @@ function SavedCard({
         className="flex w-full flex-col gap-1.5 rounded-court px-4 py-3 text-left active:bg-court-700"
       >
         <span className="flex w-full items-baseline justify-between gap-3">
-          <span id={nameId} className="min-w-0 break-words text-[17px] font-bold tracking-tight text-ink">
-            {named || formatLabel(state.config.format)}
+          <span
+            id={nameId}
+            className="min-w-0 break-words text-[17px] font-bold tracking-tight text-ink"
+          >
+            {headingFor(state)}
           </span>
           <span className="shrink-0 text-[13px] font-semibold text-ink-muted">
             {t('home.resumeAction')}
@@ -102,18 +114,29 @@ function SavedCard({
 }
 
 export function HomeScreen(): ReactNode {
-  const { status, storageBlocked, saved, lastError, open, discard, reload } = useTournament();
+  const { saved, open, discard, reload } = useTournament();
   const navigate = useNavigate();
   // Held as the whole record, not the id, so the confirm sheet can still name
   // what it is about to delete while the list refreshes underneath it.
   const [pending, setPending] = useState<StoredTournament | null>(null);
+  // Opening and discarding both talk to IndexedDB directly, so unlike the
+  // engine actions they can reject without anything else noticing.
+  const [failure, setFailure] = useState<string | null>(null);
 
   // db.ts already hands these back newest-first; re-stating it here keeps the
   // ordering a property of the screen that depends on it.
   const ordered = useMemo(() => [...saved].sort((a, b) => b.updatedAt - a.updatedAt), [saved]);
 
+  const describe = (error: unknown): string =>
+    error instanceof Error ? error.message : String(error);
+
   const resume = async (id: string): Promise<void> => {
-    await open(id);
+    try {
+      await open(id);
+    } catch (error) {
+      setFailure(describe(error));
+      return;
+    }
     navigate('/play');
   };
 
@@ -121,68 +144,69 @@ export function HomeScreen(): ReactNode {
     const target = pending;
     if (!target) return;
     setPending(null);
-    await discard(target.id);
+    try {
+      await discard(target.id);
+    } catch (error) {
+      setFailure(describe(error));
+    }
   };
-
-  let body: ReactNode;
-  if (storageBlocked) {
-    body = (
-      <Note
-        tone="alert"
-        title={t('errors.storageTitle')}
-        body={t('errors.storageBody')}
-        action={<Button onClick={() => void reload()}>{t('common.retry')}</Button>}
-      />
-    );
-  } else if (status === 'loading') {
-    body = <Note title={t('common.loading')} />;
-  } else if (status === 'error') {
-    body = (
-      <Note
-        tone="alert"
-        title={t('errors.genericTitle')}
-        // exactOptionalPropertyTypes: omit `body` rather than pass undefined.
-        {...(lastError ? { body: lastError.message } : {})}
-        action={<Button onClick={() => void reload()}>{t('common.retry')}</Button>}
-      />
-    );
-  } else if (ordered.length === 0) {
-    body = (
-      <Note
-        title={t('home.emptyTitle')}
-        body={t('home.emptyBody')}
-        action={
-          <Button variant="primary" onClick={() => navigate('/setup')}>
-            {t('home.newTournament')}
-          </Button>
-        }
-      />
-    );
-  } else {
-    body = (
-      <>
-        <h2 className="text-[15px] font-bold tracking-tight text-ink">{t('home.resumeTitle')}</h2>
-        <ul className="flex flex-col gap-3">
-          {ordered.map((stored) => (
-            <SavedCard
-              key={stored.id}
-              stored={stored}
-              onOpen={() => void resume(stored.id)}
-              onDiscard={() => setPending(stored)}
-            />
-          ))}
-        </ul>
-        <Rule />
-        <Button variant="primary" full onClick={() => navigate('/setup')}>
-          {t('home.newTournament')}
-        </Button>
-      </>
-    );
-  }
 
   return (
     <Screen title={t('app.name')}>
-      <div className="flex flex-col gap-4 px-4 py-4">{body}</div>
+      <div className="flex flex-col gap-4">
+        {failure === null ? null : (
+          <Note
+            tone="alert"
+            title={t('errors.genericTitle')}
+            body={failure}
+            action={
+              <Button
+                onClick={() => {
+                  setFailure(null);
+                  void reload();
+                }}
+              >
+                {t('common.retry')}
+              </Button>
+            }
+          />
+        )}
+
+        {ordered.length === 0 ? (
+          <Note
+            title={t('home.emptyTitle')}
+            body={t('home.emptyBody')}
+            action={
+              <Button variant="primary" onClick={() => navigate('/setup')}>
+                {t('home.newTournament')}
+              </Button>
+            }
+          />
+        ) : (
+          <>
+            <h2 className="text-[15px] font-bold tracking-tight text-ink">
+              {t('home.resumeTitle')}
+            </h2>
+            <ul className="flex flex-col gap-3">
+              {ordered.map((stored) => (
+                <SavedCard
+                  key={stored.id}
+                  stored={stored}
+                  onOpen={() => void resume(stored.id)}
+                  onDiscard={() => setPending(stored)}
+                />
+              ))}
+            </ul>
+            <Rule />
+            <Button variant="primary" full onClick={() => navigate('/setup')}>
+              {t('home.newTournament')}
+            </Button>
+          </>
+        )}
+      </div>
+
+      {/* Mounted only while a discard is pending, so the sheet always has the
+          record it is asking about and cannot render a half-empty question. */}
       {pending ? (
         <Sheet
           open
@@ -200,10 +224,7 @@ export function HomeScreen(): ReactNode {
           }
         >
           <p className="text-[15px] leading-snug text-ink">
-            {t('home.discardConfirm', {
-              name:
-                pending.state.config.name.trim() || formatLabel(pending.state.config.format),
-            })}
+            {t('home.discardConfirm', { name: headingFor(pending.state) })}
           </p>
         </Sheet>
       ) : null}

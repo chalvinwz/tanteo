@@ -25,6 +25,10 @@ export const en = {
     retry: 'Try again',
   },
 
+  nav: {
+    label: 'Sections',
+  },
+
   home: {
     emptyTitle: 'No game running',
     emptyBody: 'Set one up and you can start scoring in about a minute.',
@@ -127,6 +131,8 @@ export const en = {
     replaces: 'In for {name}',
     lockedTitle: 'Round {round} is already scored',
     lockedBody: 'Roster changes land on the next round, not this one.',
+    emptyTitle: 'Nobody here yet',
+    emptyBody: 'Add the players who turned up and they will be in the next draw.',
   },
 
   board: {
@@ -142,9 +148,17 @@ export const en = {
     columnDiff: 'Diff',
     leader: 'Leading',
     notEnoughRounds: 'Short of rounds',
+    // Attributive form on purpose: "1-round bar" and "3-round bar" both read
+    // correctly, so the string needs no plural rule.
     notEnoughRoundsHint:
-      'Needs {needed} rounds to reach the podium and has {played}. Still on the board, just not in the top three.',
+      'Short of the {needed}-round bar for the podium, with {played} played. Still on the board, just not in the top three.',
     podium: 'Podium',
+  },
+
+  live: {
+    pendingTitle: 'The share link is not wired up yet',
+    pendingBody:
+      'Scoring works offline today. Sharing a read-only board comes with the server.',
   },
 
   errors: {
@@ -152,6 +166,9 @@ export const en = {
     storageBody:
       'tanteo keeps your tournament on this device. Private browsing or a blocked storage setting will stop it.',
     genericTitle: 'Something went wrong',
+    notFoundTitle: 'No such screen',
+    notFoundBody: 'That address does not go anywhere in tanteo.',
+    bootBody: 'tanteo could not open your saved tournaments. Reloading usually clears it.',
     scoreInvalid: 'Both scores have to add up to {total}.',
     historyLocked: 'That round already has scores, so it cannot be re-drawn.',
     unknownPlayer: 'That player is not in this tournament.',

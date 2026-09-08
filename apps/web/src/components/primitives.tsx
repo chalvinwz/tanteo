@@ -276,12 +276,19 @@ export function Sheet({
   title,
   children,
   footer,
+  headerClose = true,
 }: {
   open: boolean;
   onClose: () => void;
   title: string;
   children: ReactNode;
   footer?: ReactNode;
+  /**
+   * Set false when the sheet's footer already carries the one way out. Two
+   * controls that do exactly the same thing are two chances to guess wrong
+   * about which one commits.
+   */
+  headerClose?: boolean;
 }): ReactNode {
   const panel = useRef<HTMLDivElement>(null);
   const restoreTo = useRef<HTMLElement | null>(null);
@@ -350,9 +357,11 @@ export function Sheet({
           <h2 id={titleId} className="text-[17px] font-bold tracking-tight">
             {title}
           </h2>
-          <Button variant="quiet" onClick={onClose} className="px-2">
-            {t('common.done')}
-          </Button>
+          {headerClose ? (
+            <Button variant="quiet" onClick={onClose} className="px-2">
+              {t('common.done')}
+            </Button>
+          ) : null}
         </div>
         <div className="px-4 py-4">{children}</div>
         {footer ? <div className="border-t border-line-quiet px-4 py-3">{footer}</div> : null}

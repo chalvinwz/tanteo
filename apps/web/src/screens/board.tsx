@@ -4,22 +4,23 @@ import type { ReactNode } from 'react';
 import { podium, standings } from '@tanteo/engine';
 import type { PlayerRecord, PlayerStatus, RankingMetric, Standing } from '@tanteo/engine';
 
-import { Button, Note, Rule, cx } from '../components/primitives.js';
+import { Screen } from '../app.js';
+import { Button, Note, cx } from '../components/primitives.js';
 import { t } from '../i18n/index.js';
 import type { StringKey } from '../i18n/index.js';
 import { Link } from '../router.js';
 import { useTournament } from '../state.js';
-import type { ActionError } from '../state.js';
 
 /**
  * The leaderboard.
  *
- * ENERGY 3 in DESIGN.md terms: this is the screen a group crowds around
- * between rounds, so the numerals are large and every column is tabular, and
- * the single optic accent allowed on this screen goes to whoever is leading.
+ * ENERGY 3 in DESIGN.md terms: the screen a group crowds around between
+ * rounds. So the numerals are large, every column is tabular so the digits
+ * line up down the page, and the one optic accent this screen is allowed goes
+ * to whoever is leading.
  *
  * Nothing here knows how to rank anyone. `standings()` produces the order and
- * every metric in it; this file only decides what a phone can show at 380px.
+ * every number in it; this file only decides what a phone can show at 380px.
  */
 
 /** Which of the four numeric columns the engine actually sorted on, if any. */
@@ -34,16 +35,15 @@ const METRIC_LABEL: Record<RankingMetric, StringKey> = {
 const METRIC_COLUMN: Record<RankingMetric, MetricColumn> = {
   ppr: 'ppr',
   total: 'points',
-  // Wins has no column in this table, so nothing gets the emphasis; the
+  // Wins has no column in this table, so nothing takes the emphasis; the
   // caption still says out loud what the board was ranked by.
   wins: null,
 };
 
 /**
- * Point diff is the least load-bearing of the four numbers — it is a tiebreak,
- * not the thing anyone came to read — so it is the column that goes when the
- * phone is narrow. The board never scrolls sideways; a leaderboard is for
- * glancing at.
+ * Point diff is the least load-bearing of the four numbers: it is a tiebreak,
+ * not what anyone came to read, so it is the column that goes when the phone
+ * is narrow. The board never scrolls sideways; a leaderboard is for glancing at.
  */
 const DIFF_AT_WIDTH = 'hidden min-[420px]:table-cell';
 
@@ -59,16 +59,9 @@ function signed(value: number): string {
   return value > 0 ? `+${value}` : String(value);
 }
 
-/**
- * An engine code said in the organizer's language. A code with no entry gets a
- * title and no body, which is better than showing raw engine English.
- */
-function errorBody(error: ActionError, pointsPerMatch: number | undefined): string | undefined {
-  switch (error.code) {
-    case 'INVALID_SCORE':
-      return pointsPerMatch === undefined
-        ? undefined
-        : t('errors.scoreInvalid', { total: pointsPerMatch });
+/** An engine code said in the organizer's language, never raw engine English. */
+function errorTitle(code: string): string {
+  switch (code) {
     case 'HISTORY_IMMUTABLE':
       return t('errors.historyLocked');
     case 'UNKNOWN_PLAYER':
@@ -76,20 +69,15 @@ function errorBody(error: ActionError, pointsPerMatch: number | undefined): stri
     case 'DUPLICATE_PLAYER':
       return t('errors.duplicatePlayer');
     default:
-      return undefined;
+      return t('errors.genericTitle');
   }
-}
-
-/** `body` is optional on Note, so a missing one is an omitted key, not undefined. */
-function bodyProp(body: string | undefined): { body?: string } {
-  return body === undefined ? {} : { body };
 }
 
 /* -------------------------------------------------------------------------- */
 
 /**
- * A short state marker beside a name. State is never signalled by colour here:
- * the accent tone always arrives with the word that explains it.
+ * A short marker beside a name. State is never signalled by colour here: the
+ * accent tone always arrives carrying the word that explains it.
  */
 function Badge({ tone, children }: { tone: 'accent' | 'quiet'; children: ReactNode }): ReactNode {
   return (
@@ -118,7 +106,8 @@ function NumericHead({
   return (
     <th
       scope="col"
-      // The board is sorted, so say so rather than leaving it to the eye.
+      // The board arrives sorted, so it says which column did it rather than
+      // leaving a screen reader to infer the order from the numbers.
       aria-sort={sorted ? 'descending' : undefined}
       className={cx(
         'px-1 pb-2 text-right text-[12px] font-semibold',
@@ -155,15 +144,18 @@ function BoardRow({
 }: BoardRowProps): ReactNode {
   const short = !standing.podiumEligible;
 
-  // A short-of-rounds player gets a second row carrying the explanation, and
-  // that row takes the hairline so the pair reads as one entry.
-  const edge = short ? '' : 'border-b border-line-quiet';
+  // Someone short of rounds gets a second row carrying the explanation, and
+  // that row takes the hairline so the pair reads as one entry. The colour is
+  // bound to the bottom side on purpose: a bare `border-line-quiet` sets all
+  // four, and the leader marker on the left of the same cell would then
+  // repaint this hairline optic yellow.
+  const edge = short ? '' : 'border-b border-b-line-quiet';
 
-  // The leader's row is tinted with the accent, which lifts the floor under
+  // The leader's row is tinted with the accent, which raises the floor under
   // muted text, so every number in that row goes to full ink instead.
   const plain = cx('text-[15px]', leader ? 'text-ink' : 'text-ink-muted');
   const strong = 'text-[18px] text-ink';
-  const marked = status !== 'active' || short || leader;
+  const marked = leader || short || status !== 'active';
 
   return (
     <>
@@ -173,9 +165,9 @@ function BoardRow({
           className={cx(
             'py-2.5 pl-2 pr-1 text-left align-middle font-normal',
             edge,
-            // Every row reserves the marker border, so crowning the leader
-            // never shifts the column by two pixels.
-            leader ? 'border-l-2 border-optic' : 'border-l-2 border-transparent',
+            // Every row reserves the marker, so crowning a leader never shifts
+            // the column sideways by two pixels.
+            leader ? 'border-l-2 border-l-optic' : 'border-l-2 border-l-transparent',
           )}
         >
           <span className="flex items-baseline gap-2">
@@ -192,7 +184,7 @@ function BoardRow({
                 className={cx(
                   'break-words text-[15px] leading-tight',
                   leader ? 'font-bold' : 'font-semibold',
-                  // Someone who left keeps a legible row: ink-muted is 8.18:1
+                  // Someone who left keeps a legible row. ink-muted is 8.18:1
                   // on this ground, and that is the floor, not a starting point.
                   status === 'left' && !leader ? 'text-ink-muted' : 'text-ink',
                 )}
@@ -223,43 +215,34 @@ function BoardRow({
       </tr>
       {short ? (
         <tr>
-          {/* Five columns at full width, four when the diff column is dropped;
-              browsers clamp a colspan to the columns that exist. */}
+          {/* Four, not five: a colspan is counted from the DOM, so spanning a
+              column that is display:none at this width would keep it alive as
+              an empty 96px strip and squeeze the names. The diff column gets
+              its own cell instead, which appears exactly when the column does. */}
           <td
-            colSpan={5}
-            className="border-b border-line-quiet pb-3 pl-11 pr-1 text-[13px] leading-snug text-ink-muted"
+            colSpan={4}
+            className="border-b border-b-line-quiet pb-3 pl-11 pr-1 text-[13px] leading-snug text-ink-muted"
           >
             {t('board.notEnoughRoundsHint', {
               needed: neededForPodium,
               played: standing.roundsPlayed,
             })}
           </td>
+          <td className={cx('border-b border-b-line-quiet', DIFF_AT_WIDTH)} />
         </tr>
       ) : null}
     </>
   );
 }
 
-/* -------------------------------------------------------------------------- */
-
-/** One frame for every state of this screen, so the title never jumps. */
-function Frame({ children }: { children: ReactNode }): ReactNode {
-  return (
-    <section className="mx-auto w-full max-w-md px-4 pb-8 pt-4">
-      <h1 className="text-[24px] font-bold tracking-tight text-ink">{t('board.title')}</h1>
-      <Rule className="mt-3" />
-      <div className="pt-4">{children}</div>
-    </section>
-  );
-}
 
 export function BoardScreen(): ReactNode {
   const { status, storageBlocked, state, lastError, clearError, reload } = useTournament();
 
   const rows = useMemo<Standing[]>(() => (state ? standings(state) : []), [state]);
 
-  // podium() is the engine's own answer to "is there a leader yet": it is empty
-  // until something is scored, and it steps over anyone short of rounds, so the
+  // podium() is the engine's own answer to "is there a leader yet": empty until
+  // something is scored, and it steps over anyone short of rounds, so the
   // accent never lands on a player who cannot take a podium place.
   const crowned = useMemo<Standing[]>(() => (state ? podium(state) : []), [state]);
 
@@ -277,60 +260,43 @@ export function BoardScreen(): ReactNode {
     return Math.ceil(state.config.podiumMinRoundsPct * most);
   }, [rows, state]);
 
-  const retry = (
-    <Button
-      onClick={() => {
-        clearError();
-        void reload();
-      }}
-    >
-      {t('common.retry')}
-    </Button>
-  );
-
   if (storageBlocked) {
     return (
-      <Frame>
-        <Note
-          tone="alert"
-          title={t('errors.storageTitle')}
-          body={t('errors.storageBody')}
-          action={retry}
-        />
-      </Frame>
+      <Screen title={t('board.title')}>
+        <Note tone="alert" title={t('errors.storageTitle')} body={t('errors.storageBody')} />
+      </Screen>
     );
   }
 
   if (status === 'loading') {
     return (
-      <Frame>
+      <Screen title={t('board.title')}>
         <Note title={t('common.loading')} />
-      </Frame>
+      </Screen>
     );
   }
 
   if (status === 'error') {
     return (
-      <Frame>
+      <Screen title={t('board.title')}>
         <Note
           tone="alert"
-          title={t('errors.genericTitle')}
-          {...bodyProp(lastError ? errorBody(lastError, state?.config.pointsPerMatch) : undefined)}
-          action={retry}
+          title={lastError ? errorTitle(lastError.code) : t('errors.genericTitle')}
+          action={<Button onClick={() => void reload()}>{t('common.retry')}</Button>}
         />
-      </Frame>
+      </Screen>
     );
   }
 
   if (!state) {
     return (
-      <Frame>
+      <Screen title={t('board.title')}>
         <Note
           title={t('home.emptyTitle')}
           body={t('home.emptyBody')}
           action={
-            // A real anchor, so this behaves for a keyboard and a long press;
-            // the styling matches the secondary button it sits in place of.
+            // A real anchor, so Enter and a long press both behave; the classes
+            // are the secondary button it stands in for.
             <Link
               to="/setup"
               className="inline-flex min-h-11 items-center justify-center rounded-control border border-line-control bg-court-800 px-4 py-2.5 text-[15px] font-semibold tracking-tight text-ink no-underline"
@@ -339,93 +305,87 @@ export function BoardScreen(): ReactNode {
             </Link>
           }
         />
-      </Frame>
+      </Screen>
     );
   }
 
   const metric = state.config.rankingMetric;
   const metricColumn = METRIC_COLUMN[metric];
   const leaderId = crowned[0]?.playerId;
-
-  // An empty podium means nothing has been scored, which is the one thing that
-  // separates "no board yet" from "a board where everyone is on zero".
-  if (crowned.length === 0) {
-    return (
-      <Frame>
-        <Note title={t('board.emptyTitle')} body={t('board.emptyBody')} />
-      </Frame>
-    );
-  }
+  // An empty podium is the engine saying nothing has been scored, which is what
+  // separates "no board yet" from "a board where everyone sits on zero".
+  const nothingScored = crowned.length === 0;
 
   return (
-    <Frame>
+    <Screen title={t('board.title')}>
       {lastError ? (
-        <div className="pb-4">
-          <Note
-            tone="alert"
-            title={t('errors.genericTitle')}
-            {...bodyProp(errorBody(lastError, state.config.pointsPerMatch))}
-            action={retry}
-          />
-        </div>
+        <Note
+          tone="alert"
+          title={errorTitle(lastError.code)}
+          action={<Button onClick={clearError}>{t('common.done')}</Button>}
+        />
       ) : null}
 
-      {/* table-fixed plus break-words on the name is what keeps a long name
-          from pushing the numeric columns off a 380px screen. */}
-      <table className="w-full table-fixed">
-        <caption className="pb-3 text-left text-[13px] text-ink-muted">
-          {t('board.rankedBy', { metric: t(METRIC_LABEL[metric]) })}
-        </caption>
-        <thead>
-          <tr className="border-b border-line">
-            <th
-              scope="col"
-              className="pb-2 pl-2 pr-1 text-left text-[12px] font-semibold text-ink-muted"
-            >
-              {t('board.columnPlayer')}
-            </th>
-            <NumericHead label={t('board.columnPlayed')} width="w-10" sorted={false} extra="" />
-            <NumericHead
-              label={t('board.columnPoints')}
-              width="w-12"
-              sorted={metricColumn === 'points'}
-              extra=""
-            />
-            <NumericHead
-              label={t('board.columnPpr')}
-              width="w-16"
-              sorted={metricColumn === 'ppr'}
-              extra=""
-            />
-            <NumericHead
-              label={t('board.columnDiff')}
-              width="w-14"
-              sorted={false}
-              extra={DIFF_AT_WIDTH}
-            />
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((row, index) => {
-            const player = byId.get(row.playerId);
-            return (
-              <BoardRow
-                key={row.playerId}
-                rank={index + 1}
-                // A standing is built from the roster, so the fallback only
-                // fires on a corrupt snapshot: show the id rather than drop
-                // someone's points off the board.
-                name={player?.name ?? row.playerId}
-                status={player?.status ?? 'active'}
-                standing={row}
-                leader={row.playerId === leaderId}
-                metricColumn={metricColumn}
-                neededForPodium={neededForPodium}
+      {nothingScored ? (
+        <Note title={t('board.emptyTitle')} body={t('board.emptyBody')} />
+      ) : (
+        // table-fixed plus break-words on the name is what keeps a long name
+        // from pushing the numeric columns off a 380px screen.
+        <table className="w-full table-fixed">
+          <caption className="pb-3 text-left text-[13px] text-ink-muted">
+            {t('board.rankedBy', { metric: t(METRIC_LABEL[metric]) })}
+          </caption>
+          <thead>
+            <tr className="border-b border-b-line">
+              <th
+                scope="col"
+                className="pb-2 pl-2 pr-1 text-left text-[12px] font-semibold text-ink-muted"
+              >
+                {t('board.columnPlayer')}
+              </th>
+              <NumericHead label={t('board.columnPlayed')} width="w-10" sorted={false} extra="" />
+              <NumericHead
+                label={t('board.columnPoints')}
+                width="w-12"
+                sorted={metricColumn === 'points'}
+                extra=""
               />
-            );
-          })}
-        </tbody>
-      </table>
-    </Frame>
+              <NumericHead
+                label={t('board.columnPpr')}
+                width="w-16"
+                sorted={metricColumn === 'ppr'}
+                extra=""
+              />
+              <NumericHead
+                label={t('board.columnDiff')}
+                width="w-14"
+                sorted={false}
+                extra={DIFF_AT_WIDTH}
+              />
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((row, index) => {
+              const player = byId.get(row.playerId);
+              return (
+                <BoardRow
+                  key={row.playerId}
+                  rank={index + 1}
+                  // A standing is built from the roster, so this fallback only
+                  // fires on a corrupt snapshot: show the id rather than drop
+                  // someone's points off the board.
+                  name={player?.name ?? row.playerId}
+                  status={player?.status ?? 'active'}
+                  standing={row}
+                  leader={row.playerId === leaderId}
+                  metricColumn={metricColumn}
+                  neededForPodium={neededForPodium}
+                />
+              );
+            })}
+          </tbody>
+        </table>
+      )}
+    </Screen>
   );
 }

@@ -421,7 +421,9 @@ export function PlayersScreen(): ReactNode {
             </div>
 
             <Rule />
-            <p className="text-[14px] leading-snug text-ink-muted">
+            {/* The one fact that stops a surprise, so it is stated in ink at
+                body weight rather than whispered in the footnote size. */}
+            <p className="text-[15px] font-semibold leading-snug text-ink">
               {t('players.joinsNextRound', { round: targetRound + 1 })}
             </p>
           </form>
@@ -456,7 +458,7 @@ export function PlayersScreen(): ReactNode {
             {/* States plainly, before anything is typed, that the outgoing
                 player keeps their points. This is the sentence the whole
                 product is built around. */}
-            <p className="text-[14px] leading-snug text-ink-muted">
+            <p className="text-[15px] leading-snug text-ink">
               {t('players.substituteHint', { name: outgoingName })}
             </p>
 
@@ -475,7 +477,9 @@ export function PlayersScreen(): ReactNode {
             </Field>
 
             <Rule />
-            <p className="text-[14px] leading-snug text-ink-muted">
+            {/* The one fact that stops a surprise, so it is stated in ink at
+                body weight rather than whispered in the footnote size. */}
+            <p className="text-[15px] font-semibold leading-snug text-ink">
               {t('players.joinsNextRound', { round: targetRound + 1 })}
             </p>
           </form>

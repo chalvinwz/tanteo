@@ -29,7 +29,9 @@ db.version(1).stores({ tournaments: 'id, updatedAt' });
 export function newId(): string {
   // randomUUID needs a secure context. Courtside that is https or localhost,
   // but a self-hosted box on plain http is a real deployment, so fall back.
-  if (typeof crypto !== 'undefined' && 'randomUUID' in crypto) return crypto.randomUUID();
+  // The check is on the function itself rather than `'randomUUID' in crypto`,
+  // which narrows crypto to never in the else branch.
+  if (typeof crypto.randomUUID === 'function') return crypto.randomUUID();
   const bytes = new Uint8Array(16);
   crypto.getRandomValues(bytes);
   return Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('');

@@ -15,9 +15,13 @@ import { useTournament } from '../state.js';
 /**
  * Setting up an evening.
  *
- * ENERGY 1. Hairline rules divide the three regions — how the tournament is
- * played, who is playing, and the one button that starts it — and nothing on
+ * ENERGY 1. Hairline rules divide the three regions (how the tournament is
+ * played, who is playing, and the one button that starts it), and nothing on
  * the way through carries the optic accent except that final button.
+ *
+ * Blocked storage and the boot states are the shell's to answer; by the time
+ * this screen mounts they are settled, so the only failure left to show is a
+ * create() that the engine refused.
  */
 
 /** The engine's own floor, repeated here so the form can explain it. */
@@ -76,7 +80,7 @@ function PlayerRow({
 }
 
 export function SetupScreen(): ReactNode {
-  const { storageBlocked, lastError, create } = useTournament();
+  const { lastError, create } = useTournament();
   const navigate = useNavigate();
   const listBase = useId();
 
@@ -147,19 +151,9 @@ export function SetupScreen(): ReactNode {
     if (id !== null) navigate('/play');
   };
 
-  if (storageBlocked) {
-    return (
-      <Screen title={t('setup.title')}>
-        <div className="px-4 py-4">
-          <Note tone="alert" title={t('errors.storageTitle')} body={t('errors.storageBody')} />
-        </div>
-      </Screen>
-    );
-  }
-
   return (
     <Screen title={t('setup.title')}>
-      <div className="flex flex-col gap-5 px-4 py-4">
+      <div className="flex flex-col gap-5">
         <Field label={t('setup.nameLabel')}>
           {({ id }) => (
             <TextInput
