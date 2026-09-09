@@ -4,8 +4,21 @@
     {
       "name": "tanteo-web",
       "runtimeExecutable": "pnpm",
-      "runtimeArgs": ["--filter", "@tanteo/web", "dev"],
+      "runtimeArgs": [
+        "--filter",
+        "@tanteo/web",
+        "dev"
+      ],
       "port": 5173
+    },
+    {
+      "name": "tanteo-full",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": [
+        "run",
+        "start:local"
+      ],
+      "autoPort": true
     }
   ]
 }

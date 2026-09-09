@@ -133,7 +133,11 @@ export function TournamentProvider({ children }: { children: ReactNode }): React
         setState(mostRecent.state);
         setShare(mostRecent.share);
         rememberShare(mostRecent.share);
-        ensureSyncer(mostRecent.share);
+        // Push once on open, not only on the next mutation. The server keeps
+        // one row per token and can lose it (a restart, a wiped volume), and
+        // until something is pushed every link holder sees "no board on this
+        // link". Re-sending what we already have costs one small request.
+        ensureSyncer(mostRecent.share)?.push(mostRecent.state);
       }
       setStatus('ready');
     } catch (error) {
@@ -207,9 +211,10 @@ export function TournamentProvider({ children }: { children: ReactNode }): React
     setState(stored.state);
     setShare(stored.share);
     rememberShare(stored.share);
-    // Reopening a shared tournament resumes pushing where it left off.
+    // Reopening a shared tournament resumes pushing, and re-sends immediately
+    // so a viewer is not left on a dead link until the next score.
     ensureSyncer(null);
-    ensureSyncer(stored.share);
+    ensureSyncer(stored.share)?.push(stored.state);
   }, [ensureSyncer]);
 
   const discard = useCallback(

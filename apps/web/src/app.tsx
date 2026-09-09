@@ -5,7 +5,9 @@ import { Button, Note, Rule, TAP, cx } from './components/primitives.js';
 import { t } from './i18n/index.js';
 import { Link, Router, useRoute } from './router.js';
 import { BoardScreen } from './screens/board.js';
+import { CastScreen } from './screens/cast.js';
 import { HomeScreen } from './screens/home.js';
+import { LiveScreen } from './screens/live.js';
 import { PlayScreen } from './screens/play.js';
 import { PlayersScreen } from './screens/players.js';
 import { SetupScreen } from './screens/setup.js';
@@ -168,13 +170,6 @@ function NotFound(): ReactNode {
  * answers honestly rather than 404-ing a link somebody has already shared; the
  * body carries the next action, so there is nothing to click that would lie.
  */
-function LiveViewPending(): ReactNode {
-  return (
-    <Standalone>
-      <Note title={t('live.pendingTitle')} body={t('live.pendingBody')} />
-    </Standalone>
-  );
-}
 
 /* -------------------------------------------------------------------------- */
 
@@ -234,7 +229,13 @@ function BottomBar({ pattern }: { pattern: string }): ReactNode {
 
 /* -------------------------------------------------------------------------- */
 
-function CurrentScreen({ pattern }: { pattern: string }): ReactNode {
+function CurrentScreen({
+  pattern,
+  params,
+}: {
+  pattern: string;
+  params: Readonly<Record<string, string>>;
+}): ReactNode {
   switch (pattern) {
     case '/':
       return <HomeScreen />;
@@ -246,9 +247,12 @@ function CurrentScreen({ pattern }: { pattern: string }): ReactNode {
       return <PlayersScreen />;
     case '/board':
       return <BoardScreen />;
+    // The two public routes. A viewer holds a read token and nothing else, so
+    // these render the read-only board and never the organizer's shell.
     case '/t/:token':
+      return <LiveScreen token={params['token'] ?? ''} cast={false} />;
     case '/t/:token/cast':
-      return <LiveViewPending />;
+      return <CastScreen token={params['token'] ?? ''} />;
     default:
       return <NotFound />;
   }
@@ -256,7 +260,7 @@ function CurrentScreen({ pattern }: { pattern: string }): ReactNode {
 
 function Shell(): ReactNode {
   const { status, storageBlocked, state, reload } = useTournament();
-  const { pattern, navigate } = useRoute();
+  const { pattern, params, navigate } = useRoute();
 
   const needsTournament = TOURNAMENT_ROUTES.has(pattern);
   // A shared link, a reopened tab, or a tournament discarded from another
@@ -311,7 +315,7 @@ function Shell(): ReactNode {
 
   return (
     <>
-      <CurrentScreen pattern={pattern} />
+      <CurrentScreen pattern={pattern} params={params} />
       {needsTournament ? <BottomBar pattern={pattern} /> : null}
     </>
   );

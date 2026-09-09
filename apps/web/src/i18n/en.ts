@@ -155,6 +155,13 @@ export const en = {
     podium: 'Podium',
   },
 
+  age: {
+    justNow: 'just now',
+    seconds: '{count}s ago',
+    minutes: '{count} min ago',
+    hours: '{count} h ago',
+  },
+
   share: {
     open: 'Share the board',
     title: 'Share the board',
@@ -185,7 +192,8 @@ export const en = {
     errorBody: 'The server answered with something tanteo could not use.',
     updated: 'Updated {age}',
     waiting: 'Waiting for the first score',
-    stalled: 'No update in a while. The organizer may be offline.',
+    stalled: 'Out of touch with the organizer. This board may have moved on.',
+    quiet: 'Connected. Nothing scored for a while.',
     connectionLive: 'Live',
     connectionPolling: 'Checking every few seconds',
     standings: 'Board',
