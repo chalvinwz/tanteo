@@ -1,10 +1,11 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
 
 import { podium, standings } from '@tanteo/engine';
 import type { PlayerRecord, PlayerStatus, RankingMetric, Standing } from '@tanteo/engine';
 
 import { Screen } from '../app.js';
+import { ShareSheet } from '../components/share-sheet.js';
 import { Button, Note, cx } from '../components/primitives.js';
 import { t } from '../i18n/index.js';
 import type { StringKey } from '../i18n/index.js';
@@ -238,6 +239,7 @@ function BoardRow({
 
 export function BoardScreen(): ReactNode {
   const { status, storageBlocked, state, lastError, clearError, reload } = useTournament();
+  const [sharing, setSharing] = useState(false);
 
   const rows = useMemo<Standing[]>(() => (state ? standings(state) : []), [state]);
 
@@ -317,7 +319,14 @@ export function BoardScreen(): ReactNode {
   const nothingScored = crowned.length === 0;
 
   return (
-    <Screen title={t('board.title')}>
+    <Screen
+      title={t('board.title')}
+      action={
+        <Button variant="quiet" onClick={() => setSharing(true)}>
+          {t('share.open')}
+        </Button>
+      }
+    >
       {lastError ? (
         <Note
           tone="alert"
@@ -386,6 +395,7 @@ export function BoardScreen(): ReactNode {
           </tbody>
         </table>
       )}
+      <ShareSheet open={sharing} onClose={() => setSharing(false)} />
     </Screen>
   );
 }

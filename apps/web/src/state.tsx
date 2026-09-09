@@ -12,6 +12,8 @@ import {
 } from '@tanteo/engine';
 import type { Player, RosterEvent, TournamentConfigInput, TournamentState } from '@tanteo/engine';
 
+import { createWriteToken, deriveReadToken } from '@tanteo/share';
+
 import {
   deleteTournament,
   listTournaments,
@@ -20,7 +22,9 @@ import {
   saveTournament,
   storageAvailable,
 } from './db.js';
-import type { StoredTournament } from './db.js';
+import type { ShareTokens, StoredTournament } from './db.js';
+import { createSyncer } from './sync.js';
+import type { SyncState, Syncer } from './sync.js';
 
 /**
  * The one place the app talks to the engine.
@@ -47,6 +51,11 @@ interface TournamentContextValue {
   state: TournamentState | null;
   lastError: ActionError | null;
   clearError: () => void;
+
+  /** Null until the organizer creates a share link for the open tournament. */
+  share: ShareTokens | null;
+  syncState: SyncState | null;
+  startSharing: () => Promise<ShareTokens | null>;
 
   create: (config: TournamentConfigInput, players: Player[]) => Promise<string | null>;
   open: (id: string) => Promise<void>;
@@ -75,8 +84,32 @@ export function TournamentProvider({ children }: { children: ReactNode }): React
   const [state, setState] = useState<TournamentState | null>(null);
   const [lastError, setLastError] = useState<ActionError | null>(null);
 
-  // The share token is minted in M3; carried here so a save never drops it.
-  const shareTokenRef = useRef<string | null>(null);
+  const [share, setShare] = useState<ShareTokens | null>(null);
+  const [syncState, setSyncState] = useState<SyncState | null>(null);
+  // Mirrors `share` for the callbacks below, which must not be rebuilt on every
+  // token change or every save would re-subscribe the syncer.
+  const shareRef = useRef<ShareTokens | null>(null);
+  const syncerRef = useRef<Syncer | null>(null);
+
+  /** Not a hook: just keeps the ref the save path reads in step with state. */
+  const rememberShare = (tokens: ShareTokens | null): void => {
+    shareRef.current = tokens;
+  };
+
+  const ensureSyncer = useCallback((tokens: ShareTokens | null): Syncer | null => {
+    if (!tokens) {
+      syncerRef.current?.stop();
+      syncerRef.current = null;
+      setSyncState(null);
+      return null;
+    }
+    if (syncerRef.current) return syncerRef.current;
+    const syncer = createSyncer(tokens.readToken, tokens.writeToken);
+    syncer.subscribe(setSyncState);
+    setSyncState(syncer.current());
+    syncerRef.current = syncer;
+    return syncer;
+  }, []);
 
   const refreshList = useCallback(async () => {
     setSaved(await listTournaments());
@@ -98,18 +131,24 @@ export function TournamentProvider({ children }: { children: ReactNode }): React
       if (mostRecent) {
         setActiveId(mostRecent.id);
         setState(mostRecent.state);
-        shareTokenRef.current = mostRecent.shareToken;
+        setShare(mostRecent.share);
+        rememberShare(mostRecent.share);
+        ensureSyncer(mostRecent.share);
       }
       setStatus('ready');
     } catch (error) {
       setLastError(toActionError(error));
       setStatus('error');
     }
-  }, []);
+  }, [ensureSyncer]);
 
   useEffect(() => {
     void boot();
   }, [boot]);
+
+  // A syncer holds a retry timer and an 'online' listener; neither should
+  // outlive the provider.
+  useEffect(() => () => syncerRef.current?.stop(), []);
 
   /** Run an engine call, persist the result, and surface a failure as state. */
   const mutate = useCallback(
@@ -126,9 +165,12 @@ export function TournamentProvider({ children }: { children: ReactNode }): React
         }
         // Persist outside the reducer's return path but inside this closure, so
         // the write always carries the value the UI just committed to.
-        void saveTournament(id, next, shareTokenRef.current)
+        void saveTournament(id, next, shareRef.current)
           .then(refreshList)
           .catch((error: unknown) => setLastError(toActionError(error)));
+        // Sharing is best effort and never blocks the local write: if the radio
+        // is off the syncer keeps the newest snapshot and sends it later.
+        syncerRef.current?.push(next);
         return next;
       });
     },
@@ -141,7 +183,10 @@ export function TournamentProvider({ children }: { children: ReactNode }): React
       try {
         const created = createTournament(config, players);
         const id = newId();
-        shareTokenRef.current = null;
+        // A new tournament is private until the organizer asks to share it.
+        rememberShare(null);
+        ensureSyncer(null);
+        setShare(null);
         await saveTournament(id, created, null);
         setActiveId(id);
         setState(created);
@@ -160,8 +205,12 @@ export function TournamentProvider({ children }: { children: ReactNode }): React
     if (!stored) return;
     setActiveId(stored.id);
     setState(stored.state);
-    shareTokenRef.current = stored.shareToken;
-  }, []);
+    setShare(stored.share);
+    rememberShare(stored.share);
+    // Reopening a shared tournament resumes pushing where it left off.
+    ensureSyncer(null);
+    ensureSyncer(stored.share);
+  }, [ensureSyncer]);
 
   const discard = useCallback(
     async (id: string) => {
@@ -169,12 +218,37 @@ export function TournamentProvider({ children }: { children: ReactNode }): React
       if (id === activeId) {
         setActiveId(null);
         setState(null);
-        shareTokenRef.current = null;
+        setShare(null);
+        rememberShare(null);
+        ensureSyncer(null);
       }
       await refreshList();
     },
-    [activeId, refreshList],
+    [activeId, refreshList, ensureSyncer],
   );
+
+  /**
+   * Mint a share link for the open tournament and push it once immediately, so
+   * the link works the moment it is handed over rather than after the next tap.
+   */
+  const startSharing = useCallback<TournamentContextValue['startSharing']>(async () => {
+    if (!activeId || !state) return null;
+    if (shareRef.current) return shareRef.current;
+    try {
+      const writeToken = createWriteToken();
+      const readToken = await deriveReadToken(writeToken);
+      const tokens: ShareTokens = { readToken, writeToken };
+      rememberShare(tokens);
+      setShare(tokens);
+      await saveTournament(activeId, state, tokens);
+      await refreshList();
+      ensureSyncer(tokens)?.push(state);
+      return tokens;
+    } catch (error) {
+      setLastError(toActionError(error));
+      return null;
+    }
+  }, [activeId, state, refreshList, ensureSyncer]);
 
   const score = useCallback<TournamentContextValue['score']>(
     async (roundIndex, court, scoreA, scoreB) => {
@@ -222,6 +296,9 @@ export function TournamentProvider({ children }: { children: ReactNode }): React
       state,
       lastError,
       clearError: () => setLastError(null),
+      share,
+      syncState,
+      startSharing,
       create,
       open,
       discard,
@@ -239,6 +316,9 @@ export function TournamentProvider({ children }: { children: ReactNode }): React
       activeId,
       state,
       lastError,
+      share,
+      syncState,
+      startSharing,
       create,
       open,
       discard,

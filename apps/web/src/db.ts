@@ -11,13 +11,25 @@ import type { TournamentState } from '@tanteo/engine';
  * generator by design, so both are supplied at this boundary.
  */
 
+/**
+ * The two halves of a share link.
+ *
+ * `readToken` is the public one that goes in the URL. `writeToken` is the
+ * secret that proves this device is the organizer, and it never leaves here
+ * except as a request header. See packages/share for why there are two.
+ */
+export interface ShareTokens {
+  readToken: string;
+  writeToken: string;
+}
+
 export interface StoredTournament {
   id: string;
   state: TournamentState;
   /** Epoch millis of the last write. Used to order the resume list. */
   updatedAt: number;
-  /** Capability token for the read-only share link, once one is minted. */
-  shareToken: string | null;
+  /** Null until the organizer creates a share link. */
+  share: ShareTokens | null;
 }
 
 const db = new Dexie('tanteo') as Dexie & {
@@ -25,6 +37,19 @@ const db = new Dexie('tanteo') as Dexie & {
 };
 
 db.version(1).stores({ tournaments: 'id, updatedAt' });
+// v2 replaced a single share token with the read/write pair. Nothing shipped on
+// v1, but the upgrade is written out anyway so an early install is not stranded.
+db.version(2)
+  .stores({ tournaments: 'id, updatedAt' })
+  .upgrade(async (tx) => {
+    await tx
+      .table<Record<string, unknown>>('tournaments')
+      .toCollection()
+      .modify((row) => {
+        delete row['shareToken'];
+        row['share'] = null;
+      });
+  });
 
 export function newId(): string {
   // randomUUID needs a secure context. Courtside that is https or localhost,
@@ -48,9 +73,9 @@ export async function loadTournament(id: string): Promise<StoredTournament | und
 export async function saveTournament(
   id: string,
   state: TournamentState,
-  shareToken: string | null,
+  share: ShareTokens | null,
 ): Promise<void> {
-  await db.tournaments.put({ id, state, updatedAt: Date.now(), shareToken });
+  await db.tournaments.put({ id, state, updatedAt: Date.now(), share });
 }
 
 export async function deleteTournament(id: string): Promise<void> {

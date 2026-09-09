@@ -97,3 +97,44 @@ service lines (too busy below 192px).
 **Why a script.** The geometry stays identical across sizes, and the maskable
 safe area is computed rather than guessed: the same drawing shrinks to 58% of
 the canvas so a launcher's circular crop never clips the net.
+
+## Two share tokens, not one
+
+**Decision.** The organizer's device holds a 32-byte `writeToken`. The share URL
+carries `readToken = SHA-256(writeToken)`. The server stores snapshots under the
+read token and, on a write, checks that the SHA-256 of the presented write token
+equals the read token in the path.
+
+**Why.** The brief says capability URLs and no auth, which taken literally means
+one token in the URL. That token would then be both the viewing credential and
+the writing credential, so every spectator the link is forwarded to could
+overwrite the tournament. A link pasted into a group chat should not be a write
+key.
+
+Two tokens fix it without adding accounts, sessions or state: the server stores
+no secret, needs no user table, and still cannot be written to by someone who
+only has the link. Recovering the write token from the read token is a preimage
+attack on SHA-256.
+
+Verified: a POST presenting the read token as the write token returns 403, a
+POST with no write header returns 401, and a correct write returns the exact
+bytes on the following GET.
+
+**Cost accepted.** An organizer who loses their device loses the ability to push
+to that link, because the write token lived only there. That is the same
+trade-off as any capability model with no account to recover from, and it is the
+right one for a product whose whole premise is no accounts.
+
+## Snapshot bodies are opaque to the server
+
+**Decision.** The server stores the posted JSON as text and never parses a
+tournament. The revision travels in a header, not by reading the body.
+
+**Why.** The engine is the only place the rules live. A server that understood
+`TournamentState` would be a second implementation waiting to disagree with the
+first. The one exception is a `JSON.parse` on write whose result is discarded:
+that is a validity check so a viewer is never handed something unparseable, not
+an interpretation.
+
+Refusing a stale write is therefore a comparison of two integers, which is all
+"last write from the one organizer wins" needs.

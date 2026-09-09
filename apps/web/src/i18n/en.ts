@@ -155,10 +155,44 @@ export const en = {
     podium: 'Podium',
   },
 
+  share: {
+    open: 'Share the board',
+    title: 'Share the board',
+    body: 'Anyone with this link can watch the board. They cannot change anything.',
+    start: 'Create a share link',
+    creating: 'Creating the link',
+    copy: 'Copy link',
+    copied: 'Copied',
+    copyFailed: 'Could not copy. Select the link and copy it by hand.',
+    castHint: 'Open the link on a tablet or a TV at the venue and pick Cast view.',
+    pushPending: 'Not sent yet. It goes out when the signal comes back.',
+    pushedAt: 'Sent {age}',
+    pushFailed: 'The server refused the last push.',
+  },
+
   live: {
     pendingTitle: 'The share link is not wired up yet',
     pendingBody:
       'Scoring works offline today. Sharing a read-only board comes with the server.',
+    title: 'Live board',
+    loading: 'Opening the board',
+    missingTitle: 'No board on this link',
+    missingBody:
+      'Either the link is wrong, or the organizer has not shared this tournament yet.',
+    offlineTitle: 'Cannot reach the board',
+    offlineBody: 'This device is offline. The board below is the last one that arrived.',
+    errorTitle: 'The board could not be read',
+    errorBody: 'The server answered with something tanteo could not use.',
+    updated: 'Updated {age}',
+    waiting: 'Waiting for the first score',
+    stalled: 'No update in a while. The organizer may be offline.',
+    connectionLive: 'Live',
+    connectionPolling: 'Checking every few seconds',
+    standings: 'Board',
+    currentRound: 'On court now',
+    castView: 'Cast view',
+    phoneView: 'Phone view',
+    castHint: 'Cycles the board and the courts for a screen at the venue.',
   },
 
   errors: {
