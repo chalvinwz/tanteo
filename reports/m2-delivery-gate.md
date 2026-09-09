@@ -1,4 +1,4 @@
-# M2 Delivery Gate — organizer PWA
+# M2 Delivery Gate: organizer PWA
 
 **Result: PASS**
 Date: 2026-09-09. Mode: DURING. Direction: `DESIGN.md`.

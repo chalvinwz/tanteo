@@ -1,4 +1,4 @@
-# M4 Delivery Gate — shipping polish
+# M4 Delivery Gate: shipping polish
 
 **Result: PASS.**
 Date: 2026-09-09. Mode: DURING. Direction: `DESIGN.md`.

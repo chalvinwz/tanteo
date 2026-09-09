@@ -1,4 +1,4 @@
-# M3 Delivery Gate — share server, live view, cast mode
+# M3 Delivery Gate: share server, live view, cast mode
 
 **Result: PASS.** One behaviour was left unverified in the browser at the time
 and is now settled: M4 confirmed the app was correct and the observation was an
