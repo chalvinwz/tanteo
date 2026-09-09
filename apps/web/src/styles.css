@@ -14,6 +14,34 @@
  * tokens on purpose.
  */
 
+/*
+ * The display face, self-hosted because this app has to boot with no network.
+ *
+ * Archivo Black, subset to the seventeen characters a score can contain. All ten
+ * digits are 667/1000 em in the source binary, so the numerals are tabular
+ * before any feature is asked for; nothing in a font-feature negotiation can
+ * make a score jump width mid-tick.
+ *
+ * `swap` because a score that is late is better than a score that is missing,
+ * and the file is 3.6 KB behind the service worker, so the swap window is one
+ * paint on a first visit and nothing after that.
+ *
+ * The weight range is not a variable axis. It is one static Black cut told to
+ * answer for the whole range, so a request for 800 matches this face exactly
+ * and the browser never fakes bold on top of a face that is already black.
+ *
+ * `unicode-range` is the subset written down. Anything outside it falls
+ * straight through to the grotesque instead of waiting on this file.
+ */
+@font-face {
+  font-family: 'Archivo Black';
+  src: url('/fonts/archivo-black-numerals.woff2') format('woff2');
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0020, U+002B-002E, U+0030-0039, U+00A0, U+2212;
+}
+
 @theme {
   /* Core surfaces. Padel courts are blue, and the session happens after dark,
      so the ground is a deep court blue rather than a neutral charcoal. */
@@ -41,13 +69,18 @@
      This is the token every button, input and tappable card border uses. */
   --color-line-control: rgb(255 255 255 / 0.4);
 
-  /* Type. A courtside phone in floodlight, read at arm's length and sometimes
-     from two meters, so the grotesque is the platform UI face (no webfont
-     fetch: this app has to boot with no network) and the display face is that
-     same stack pushed to weight and negative tracking. See docs/decisions.md
-     for the self-hosted face this is a placeholder for. */
+  /* Type. Two faces, and the split is the one DESIGN.md asks for: a plain
+     grotesque for words, one display face for numerals.
+
+     The grotesque stays the platform UI face. It is already on the device, it
+     is the face the organizer reads everything else in, and no download can
+     fail. */
   --font-sans:
     system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+
+  /* The display face carries the scores and only the scores. Behind it sits the
+     grotesque, so a failed load costs the identity, never the number. */
+  --font-display: 'Archivo Black', var(--font-sans);
 
   /* Radius as hierarchy, not decoration: three steps, never a pill on
      everything. Cards are square-ish so they read as court boxes. */
@@ -82,8 +115,15 @@
   }
 
   /* Every score numeral is tabular and lining, so digits do not jump width as
-     they tick. This is the single most important type rule in the app. */
+     they tick. This is the single most important type rule in the app.
+
+     Archivo Black is tabular and lining by default: its digits are all one
+     width and they sit on the cap line, and it ships no tnum or lnum feature
+     because it has nothing to switch to. The two declarations below are
+     therefore no-ops on the display face and load-bearing on the fallback,
+     which is exactly the point of keeping them. */
   .numeral {
+    font-family: var(--font-display);
     font-variant-numeric: tabular-nums lining-nums;
     font-feature-settings: 'tnum' 1, 'lnum' 1;
     letter-spacing: -0.04em;

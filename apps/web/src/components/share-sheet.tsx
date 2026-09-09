@@ -68,7 +68,14 @@ export function ShareSheet({ open, onClose }: { open: boolean; onClose: () => vo
   return (
     <Sheet open={open} onClose={onClose} title={t('share.title')}>
       <div className="flex flex-col gap-4">
-        <p className="text-[14px] leading-snug text-ink-muted">{t('share.body')}</p>
+        {/*
+          Only when a link is actually possible. Leading with "anyone with this
+          link can watch" above a note saying there is no link reads as a
+          contradiction, which is the opposite of the point of that note.
+        */}
+        {serverThere !== false ? (
+          <p className="text-[14px] leading-snug text-ink-muted">{t('share.body')}</p>
+        ) : null}
 
         {!share && serverThere === null ? <Note title={t('share.checking')} /> : null}
 
