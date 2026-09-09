@@ -25,9 +25,14 @@ jobs:
           node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      # Build first, and not for speed. @tanteo/engine and @tanteo/share are
+      # consumed through their built dist, so on a clean checkout the server and
+      # web typechecks cannot resolve them until those packages have been built.
+      # pnpm -r builds in topological order, so this is the step that makes the
+      # two after it possible.
+      - run: pnpm build
       - run: pnpm typecheck
       - run: pnpm test
-      - run: pnpm build
       # The built client is what e2e and Lighthouse measure, so it is built once
       # here and handed on rather than rebuilt per job.
       - uses: actions/upload-artifact@v4
