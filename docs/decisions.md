@@ -55,24 +55,28 @@ warning.
 **Exit.** `SnapshotStore` is `get` / `put` / `subscribe`. Swapping drivers is one
 file.
 
-## System font stack, not a self-hosted display face
+## Archivo Black for the numerals, self-hosted and subset
 
-**Decision.** `system-ui` and friends for everything, with score numerals
-carrying `font-variant-numeric: tabular-nums lining-nums` plus heavy weight and
-negative tracking.
+**Decision.** Scores are set in Archivo Black, served from
+`apps/web/public/fonts/` as a 3.5 KB woff2 subset to the sixteen characters a
+score can contain. Words stay in the platform grotesque.
 
-**Why.** DESIGN.md asks for "one distinctive display face" for the numerals. A
-webfont from a CDN is not an option: the app has to boot with no network, which
-is the entire premise. Self-hosting a face is the correct answer and means
-adding a binary asset nobody has chosen yet, so the type does its work through
-scale, weight and tracking until someone picks one.
+**Why this face.** DESIGN.md asks for "oversized tabular-lining numerals in one
+distinctive display face". Every digit in Archivo Black is 667/1000 em in the
+source binary, so the numerals are tabular by construction rather than by
+negotiating a font feature, which matters because a score that changes width as
+it ticks is the exact defect the direction is guarding against. It is OFL, so
+self-hosting it in a public repo is fine, and it is not on the default roster
+antislop calls out (Inter, Geist, Space Grotesk and the mono three).
 
-**Cost accepted.** The numerals are less distinctive than the direction asks
-for. Everything else in the direction (line-work, the optic accent, the court
-ground) carries the identity meanwhile.
+**Why self-hosted.** The app has to boot with no network, so a webfont CDN was
+never an option. Subsetting is what makes that affordable: 3.5 KB behind the
+service worker means the swap window is one paint on a first visit and nothing
+afterwards. `font-display: swap` with the grotesque behind it, so a failed load
+costs the identity and never the number.
 
-**Exit.** Drop a `.woff2` into `apps/web/public/fonts/`, add an `@font-face`,
-and change `--font-display` in `styles.css`. Nothing else references the face.
+**Previously.** This started as the platform stack with a note saying the
+direction was unmet. That note is retired.
 
 ## The app icon: a court whose net has moved
 

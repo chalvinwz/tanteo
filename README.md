@@ -80,6 +80,37 @@ browser's IndexedDB on that device, and the app shell is precached, so it boots
 and scores with no network at all. Sharing is the only part that waits for
 signal.
 
+## Try it without installing anything
+
+<https://chalvinwz.github.io/tanteo/>
+
+That is the organizer app, deployed to GitHub Pages on every push to `main`.
+Creating tournaments, scoring, roster changes and the board all work there,
+including with the network off, because that half of tanteo never needed a
+server.
+
+**Sharing does not work on that deployment, and the app tells you so.** GitHub
+Pages is static, so there is nowhere for the share server to run. Open the share
+sheet there and it explains the situation rather than handing you a link that
+would never load. For live sharing, run the container below.
+
+## Put it on a phone
+
+The organizer app is meant to be installed, not visited. On the phone you will
+actually use courtside:
+
+1. Open the deployment above, or your own container's address, in the phone's
+   browser. It has to be https or localhost, or the browser will not offer to
+   install it.
+2. Use the browser's "Add to Home Screen" or "Install app".
+3. Open it from the home screen. It runs without browser chrome, and it keeps
+   working with the phone in airplane mode.
+
+To test your own build against a real phone on the same network, run the
+container and reach it by your machine's LAN address. Note that most browsers
+will not install a PWA over plain http from a LAN address, so installation
+testing wants a tunnel or a real certificate; scoring itself works either way.
+
 ## Run it yourself
 
 There is no published image yet, so build one. From the repo root:
