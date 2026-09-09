@@ -1,7 +1,9 @@
 # M3 Delivery Gate — share server, live view, cast mode
 
-**Result: PASS, with one behaviour verified by unit test rather than in the
-browser. That exception is stated in full below rather than buried.**
+**Result: PASS.** One behaviour was left unverified in the browser at the time
+and is now settled: M4 confirmed the app was correct and the observation was an
+artefact of the harness. See "RESOLVED IN M4" below, which is kept rather than
+deleted because a wrong conclusion was nearly recorded as a defect.
 Date: 2026-09-09. Mode: DURING. Direction: `DESIGN.md`.
 
 **Design Read.** A read-only board for a spectator's phone and for a screen
@@ -56,7 +58,39 @@ Console: no errors.
 5. Agent scratch files (`cast-preview.html`, `cast-preview.tsx`, a stray
    `probe.test.ts`) removed before commit.
 
-## The one thing not verified in the browser
+## RESOLVED IN M4: the one thing not verified in the browser
+
+**The app was right. The M3 observation was an artefact of how the connection
+was cut, and this section is kept rather than deleted because the wrong
+conclusion was nearly recorded as a defect.**
+
+M4's Playwright suite settles it on a page whose `document.visibilityState` the
+test asserts is `visible` before asserting anything else
+(`e2e/tests/live-stall.spec.ts`). Over real seconds, with the only variable
+being whether anything arrived:
+
+- 50 seconds of a healthy stream with nothing scored: still says Live, no
+  warning. Heartbeats at 25s carry it.
+- The server is then suspended with SIGSTOP, which holds every socket open while
+  delivering nothing: within the allowance the view drops Live and shows
+  `live.stalled`, and the board stays on screen underneath.
+- SIGCONT: the warning clears.
+
+**Why M3 could not see it.** Neither `context.setOffline(true)` nor
+`page.route('**/api/**')` severs an *established* SSE connection: route
+interception only reaches requests not yet made, and Chromium's offline
+emulation does not tear down an in-flight event-stream response. The heartbeat
+kept arriving down the old socket, so the view was correct to keep saying Live.
+That also explains the two things that looked damning at the time, the status
+never demoting and zero further network calls: contact was genuinely fresh, so
+there was nothing for the freshness check to act on.
+
+Verified as non-vacuous two ways: the E2E agent's own sensitivity check (moving
+the fake-clock jump below the threshold makes it fail), and a mutation check
+run afterwards (raising `STREAM_TIMEOUT_MS` to 45,000 seconds fails the test;
+restoring it passes).
+
+## The original M3 note, kept for the record
 
 **A stream that dies after connecting.** The intended behaviour: after 45
 seconds with nothing arriving, the view stops claiming to be live, falls back to

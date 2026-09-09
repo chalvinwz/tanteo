@@ -201,7 +201,7 @@ export function Stepper({
       </span>
       <div className="flex items-center gap-2">
         <Button
-          aria-label={`${label}: one less`}
+          aria-label={t('stepper.decrease', { label })}
           disabled={value <= min}
           onClick={() => onChange(clamp(value - step))}
           className="w-14 text-xl"
@@ -215,7 +215,7 @@ export function Stepper({
           {value}
         </output>
         <Button
-          aria-label={`${label}: one more`}
+          aria-label={t('stepper.increase', { label })}
           disabled={value >= max}
           onClick={() => onChange(clamp(value + step))}
           className="w-14 text-xl"

@@ -158,7 +158,7 @@ export function HomeScreen(): ReactNode {
           <Note
             tone="alert"
             title={t('errors.genericTitle')}
-            body={failure}
+            body={t('errors.genericBody')}
             action={
               <Button
                 onClick={() => {

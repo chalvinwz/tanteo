@@ -1,0 +1,50 @@
+{
+  "$comment": [
+    "Lighthouse CI for tanteo. Run with `pnpm run lighthouse`.",
+    "",
+    "INSTALLABILITY IS NOT ASSERTED HERE, AND THAT IS DELIBERATE.",
+    "Lighthouse 12 removed the aggregate `pwa` category and then deleted the",
+    "audits that used to back it: there is no installable-manifest, no",
+    "service-worker and no maskable-icon in lighthouse 12.6.1, not even",
+    "uncategorised. An assertion naming one of them would pass on an audit that",
+    "never ran, which is worse than no gate at all. Chrome still answers the",
+    "question directly through Page.getInstallabilityErrors, so the",
+    "installability gate is scripts/check-pwa-installable.mjs and `pnpm run",
+    "lighthouse` runs both. Revisit if a future lighthouse brings the audits",
+    "back.",
+    "",
+    "Everything is measured under lighthouse's default mobile emulation, which",
+    "is the right default for a product used one-handed at a court.",
+    "The server is started and seeded by scripts/lighthouse-server.mjs, so the",
+    "share URL below is a real board and not the empty-link state."
+  ],
+  "ci": {
+    "collect": {
+      "startServerCommand": "node scripts/lighthouse-server.mjs",
+      "startServerReadyPattern": "ready for lighthouse",
+      "startServerReadyTimeout": 60000,
+      "url": [
+        "http://localhost:8080/",
+        "http://localhost:8080/setup",
+        "http://localhost:8080/t/tJ2uf8JgATkV7a9agWYvREXvFGjSNRtY1136E1kd_yY"
+      ],
+      "numberOfRuns": 3,
+      "settings": {
+        "onlyCategories": ["performance", "accessibility", "best-practices", "seo"]
+      }
+    },
+    "assert": {
+      "assertions": {
+        "categories:accessibility": ["error", { "minScore": 0.9 }],
+        "categories:best-practices": ["warn", { "minScore": 0.9 }],
+        "categories:seo": ["warn", { "minScore": 0.9 }],
+        "categories:performance": ["warn", { "minScore": 0.9 }]
+      }
+    },
+    "upload": {
+      "target": "filesystem",
+      "outputDir": ".lighthouseci",
+      "reportFilenamePattern": "%%PATHNAME%%-%%DATETIME%%.report.%%EXTENSION%%"
+    }
+  }
+}

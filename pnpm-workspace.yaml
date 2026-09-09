@@ -1,6 +1,7 @@
 packages:
   - 'packages/*'
   - 'apps/*'
+  - 'e2e'
 
 # esbuild's install script links its platform binary. It arrives as a vitest
 # dependency and is a deliberate allowlist entry, not a blanket opt-in: pnpm

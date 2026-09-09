@@ -55,7 +55,7 @@ jobs:
         with:
           name: build
       - run: pnpm --filter @tanteo/e2e exec playwright install --with-deps chromium
-      - run: pnpm --filter @tanteo/e2e test
+      - run: pnpm --filter @tanteo/e2e e2e
       - uses: actions/upload-artifact@v4
         if: failure()
         with:

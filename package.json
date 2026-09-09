@@ -12,9 +12,12 @@
     "test": "pnpm -r test",
     "lint": "pnpm -r lint",
     "dev": "pnpm -r --parallel dev",
-    "start:local": "TANTEO_DB=:memory: TANTEO_WEB_ROOT=./apps/web/dist node apps/server/dist/main.js"
+    "start:local": "TANTEO_DB=:memory: TANTEO_WEB_ROOT=./apps/web/dist node apps/server/dist/main.js",
+    "e2e": "pnpm --filter @tanteo/e2e e2e",
+    "lighthouse": "lhci autorun"
   },
   "devDependencies": {
+    "@lhci/cli": "^0.15.1",
     "typescript": "^5.9.2"
   }
 }

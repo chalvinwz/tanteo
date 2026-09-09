@@ -278,7 +278,7 @@ export function SetupScreen(): ReactNode {
 
         <div className="flex flex-col gap-3">
           {attempted && lastError ? (
-            <Note tone="alert" title={t('errors.genericTitle')} body={lastError.message} />
+            <Note tone="alert" title={t('errors.genericTitle')} body={t('errors.genericBody')} />
           ) : null}
           {/* The blocked button says nothing on its own, so the reason sits
               above it in plain text rather than in a tooltip nobody opens. */}

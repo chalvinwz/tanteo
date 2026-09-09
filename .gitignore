@@ -11,3 +11,7 @@ data/*.sqlite-*
 test-results/
 playwright-report/
 .lighthouseci/
+
+.lighthouseci/
+e2e/playwright-report/
+e2e/test-results/

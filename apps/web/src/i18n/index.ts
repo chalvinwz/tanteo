@@ -57,3 +57,21 @@ export function t(
     return value === undefined ? whole : String(value);
   });
 }
+
+/** BCP 47 tag per catalog, for the document language. */
+const documentLanguage: Record<Locale, string> = { en: 'en' };
+
+/**
+ * Put the locale on the document itself.
+ *
+ * `<html lang>` decides how a screen reader pronounces the page, and the meta
+ * description is what a group chat shows when the organizer pastes the link.
+ * Both are baked into index.html at build time, so without this they would
+ * stay English under a translated UI. The manifest's own `lang` and
+ * `description` are still build-time and are noted in reports/i18n-audit.md.
+ */
+export function applyDocumentLocale(locale: Locale = 'en'): void {
+  document.documentElement.lang = documentLanguage[locale];
+  const description = document.querySelector('meta[name="description"]');
+  if (description) description.setAttribute('content', t('app.description', undefined, locale));
+}

@@ -9,6 +9,8 @@ export const en = {
   app: {
     name: 'tanteo',
     tagline: 'Padel scoring that survives a changing roster',
+    /** The meta description, and the manifest's, in one place. */
+    description: 'Padel Americano and Mexicano scorekeeping that survives a changing roster.',
   },
 
   common: {
@@ -27,6 +29,11 @@ export const en = {
 
   nav: {
     label: 'Sections',
+  },
+
+  stepper: {
+    decrease: '{label}: one less',
+    increase: '{label}: one more',
   },
 
   home: {
@@ -208,6 +215,11 @@ export const en = {
     storageBody:
       'tanteo keeps your tournament on this device. Private browsing or a blocked storage setting will stop it.',
     genericTitle: 'Something went wrong',
+    // Shown instead of the engine's own sentence, which is developer English
+    // and would survive translation untouched. The code goes beside it so a
+    // bug report can still say which rule was hit.
+    genericBody: 'tanteo refused that change. Nothing was lost, so try again.',
+    detailCode: 'Code: {code}',
     notFoundTitle: 'No such screen',
     notFoundBody: 'That address does not go anywhere in tanteo.',
     bootBody: 'tanteo could not open your saved tournaments. Reloading usually clears it.',

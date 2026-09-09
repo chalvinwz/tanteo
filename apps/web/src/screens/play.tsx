@@ -56,7 +56,7 @@ function ErrorNote({
       break;
     default:
       title = t('errors.genericTitle');
-      body = error.message;
+      body = t('errors.genericBody');
       break;
   }
   return (
@@ -236,7 +236,7 @@ export function PlayScreen(): ReactNode {
           {...(storageBlocked
             ? { body: t('errors.storageBody') }
             : lastError
-              ? { body: lastError.message }
+              ? { body: t('errors.genericBody') }
               : {})}
           action={<Button onClick={() => void reload()}>{t('common.retry')}</Button>}
         />
