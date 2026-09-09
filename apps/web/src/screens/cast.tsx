@@ -6,7 +6,7 @@ import type { Match, PlayerRecord, RankingMetric, Standing, TournamentState } fr
 import { isWellFormedToken } from '@tanteo/share';
 
 import { Numeral, Rule, cx } from '../components/primitives.js';
-import { t } from '../i18n/index.js';
+import { formatRate, t } from '../i18n/index.js';
 import type { StringKey } from '../i18n/index.js';
 import { describeAge, isOutOfTouch, useLiveBoard } from '../live-source.js';
 import type { LiveStatus } from '../live-source.js';
@@ -274,7 +274,7 @@ function BoardPanel({ state }: { state: TournamentState }): ReactNode {
                   beside "22.75" reads as a tie it is not. It is also the one
                   metric that cannot roll, because <Numeral /> ticks integers. */}
               {metric === 'ppr' ? (
-                <span className="tabular-nums">{row.ppr.toFixed(2)}</span>
+                <span className="tabular-nums">{formatRate(row.ppr)}</span>
               ) : (
                 <Numeral value={metricValue(row, metric)} />
               )}

@@ -7,7 +7,7 @@ import type { PlayerRecord, PlayerStatus, RankingMetric, Standing } from '@tante
 import { Screen } from '../app.js';
 import { ShareSheet } from '../components/share-sheet.js';
 import { Button, Note, cx } from '../components/primitives.js';
-import { t } from '../i18n/index.js';
+import { formatRate, t } from '../i18n/index.js';
 import type { StringKey } from '../i18n/index.js';
 import { Link } from '../router.js';
 import { useTournament } from '../state.js';
@@ -52,7 +52,7 @@ const NUMERIC_CELL = 'numeral whitespace-nowrap px-1 py-2.5 text-right align-mid
 
 /** PPR is a rate: "22" beside "22.75" reads as a tie it is not. */
 function rate(value: number): string {
-  return value.toFixed(2);
+  return formatRate(value);
 }
 
 /** A diff without a sign is ambiguous, so positives carry theirs. */

@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 
 import { en } from '../src/i18n/en.js';
 import { id } from '../src/i18n/id.js';
-import { getLocale, locales, setLocale, subscribeLocale, t } from '../src/i18n/index.js';
+import { formatRate, getLocale, locales, setLocale, subscribeLocale, t } from '../src/i18n/index.js';
 import type { StringKey } from '../src/i18n/index.js';
 
 /**
@@ -164,5 +164,20 @@ describe('locale selection', () => {
     unsubscribe();
     setLocale('en');
     expect(changes).toBe(1);
+  });
+});
+
+describe('formatRate', () => {
+  it('uses the decimal separator the reader expects', () => {
+    // The digits are the loudest thing on a scoreboard, so "22.75" sitting
+    // under fully Indonesian copy is not a small blemish.
+    expect(formatRate(22.75, 'en')).toBe('22.75');
+    expect(formatRate(22.75, 'id')).toBe('22,75');
+  });
+
+  it('always shows two decimals, so the column does not change width', () => {
+    expect(formatRate(6, 'en')).toBe('6.00');
+    expect(formatRate(6, 'id')).toBe('6,00');
+    expect(formatRate(0, 'en')).toBe('0.00');
   });
 });

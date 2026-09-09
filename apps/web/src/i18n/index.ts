@@ -164,3 +164,21 @@ export function applyDocumentLocale(locale: Locale = getLocale()): void {
   const description = document.querySelector('meta[name="description"]');
   if (description) description.setAttribute('content', t('app.description', undefined, locale));
 }
+
+/**
+ * A points-per-round rate, formatted for the reader's locale.
+ *
+ * `toFixed` always produces a dot, so an Indonesian board would have read
+ * "22.75" under fully Indonesian copy where "22,75" is the decimal separator.
+ * The digits are the loudest thing on a scoreboard, so getting them wrong is
+ * not a small blemish. Intl is built in, so this costs no dependency.
+ *
+ * Two decimals, fixed, because a leaderboard column whose width changes as the
+ * numbers change is the defect the tabular figures exist to prevent.
+ */
+export function formatRate(value: number, locale: Locale = getLocale()): string {
+  return new Intl.NumberFormat(documentLanguage[locale], {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(value);
+}

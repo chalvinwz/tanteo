@@ -37,6 +37,11 @@ export default defineConfig({
   expect: { timeout: 15_000 },
 
   use: {
+    // Pinned, not inherited. The app now picks its locale from navigator.language
+    // and ships Bahasa Indonesia, so a runner with an Indonesian system language
+    // would render Indonesian and every assertion against the English catalog
+    // would fail for a reason that has nothing to do with the app.
+    locale: 'en-US',
     baseURL,
     ...PHONE,
     trace: 'retain-on-failure',

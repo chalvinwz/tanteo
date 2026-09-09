@@ -7,7 +7,7 @@ import { isWellFormedToken } from '@tanteo/share';
 
 import { Screen } from '../app.js';
 import { Button, Note, Numeral, TAP, cx } from '../components/primitives.js';
-import { t } from '../i18n/index.js';
+import { formatRate, t } from '../i18n/index.js';
 import type { StringKey } from '../i18n/index.js';
 import { describeAge, isOutOfTouch, useLiveBoard } from '../live-source.js';
 import type { LiveStatus } from '../live-source.js';
@@ -76,7 +76,7 @@ const LINK_AS_BUTTON = cx(
 
 /** PPR is a rate: "22" beside "22.75" reads as a tie it is not. */
 function rate(value: number): string {
-  return value.toFixed(2);
+  return formatRate(value);
 }
 
 /** A diff without a sign is ambiguous, so positives carry theirs. */
