@@ -182,6 +182,10 @@ export const en = {
     pushPending: 'Not sent yet. It goes out when the signal comes back.',
     pushedAt: 'Sent {age}',
     pushFailed: 'The server refused the last push.',
+    checking: 'Looking for a share server',
+    unavailableTitle: 'No share server on this deployment',
+    unavailableBody:
+      'Scoring works here with no connection at all. Sharing a live board needs the tanteo server, which this build is not talking to. Self-host it and sharing turns on.',
   },
 
   live: {

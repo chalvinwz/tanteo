@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import type { TournamentState } from '@tanteo/engine';
 
+import { apiUrl } from './api.js';
 import { t } from './i18n/index.js';
 
 /**
@@ -85,7 +86,7 @@ export function useLiveBoard(readToken: string): LiveBoard {
 
     const fetchOnce = async (): Promise<boolean> => {
       try {
-        const response = await fetch(`/api/t/${readToken}`, { cache: 'no-store' });
+        const response = await fetch(apiUrl(`api/t/${readToken}`), { cache: 'no-store' });
         if (response.status === 404) {
           if (!cancelled) setStatus('missing');
           return false;
@@ -113,7 +114,7 @@ export function useLiveBoard(readToken: string): LiveBoard {
         startPolling();
         return;
       }
-      source = new EventSource(`/api/t/${readToken}/stream`);
+      source = new EventSource(apiUrl(`api/t/${readToken}/stream`));
 
       source.addEventListener('snapshot', (event) => {
         accept((event as MessageEvent<string>).data);

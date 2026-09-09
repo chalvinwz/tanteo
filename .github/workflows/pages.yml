@@ -1,0 +1,68 @@
+name: pages
+
+# Deploys the organizer app to GitHub Pages.
+#
+# Pages is static, so this is the client only: creating tournaments, scoring,
+# the roster and the board all work, because that half of tanteo is offline
+# first by design. The live share link needs the Hono server and is therefore
+# not available on a Pages deployment; the app detects that and says so rather
+# than minting a link that goes nowhere. Self-host the container for sharing.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deployment at a time, and let a newer push win rather than queueing
+# behind a build that is already out of date.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+
+      - name: Build the client for the Pages subpath
+        # The repo is not <user>.github.io, so the site lives at /tanteo/. The
+        # service worker scope, the manifest and every asset URL are derived
+        # from this, and the PWA will not install if they disagree.
+        env:
+          TANTEO_BASE: /tanteo/
+        run: |
+          pnpm --filter @tanteo/engine build
+          pnpm --filter @tanteo/share build
+          pnpm --filter @tanteo/web build
+
+      - name: Serve client routes from the app shell
+        # Pages has no rewrite rules, so a deep link like /tanteo/board would
+        # 404. Pages does serve 404.html for unmatched paths, so the app shell
+        # doubles as it and the client router takes over from there.
+        run: cp apps/web/dist/index.html apps/web/dist/404.html
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: apps/web/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

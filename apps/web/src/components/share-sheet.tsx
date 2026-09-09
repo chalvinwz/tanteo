@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
 
 import { shareUrlPath } from '@tanteo/share';
 
+import { shareServerAvailable } from '../api.js';
 import { t } from '../i18n/index.js';
+import { withBase } from '../router.js';
 import { useTournament } from '../state.js';
 import { Button, Note, Sheet } from './primitives.js';
 
@@ -16,16 +18,32 @@ import { Button, Note, Sheet } from './primitives.js';
  */
 
 function absoluteShareUrl(readToken: string): string {
-  return new URL(shareUrlPath(readToken), window.location.origin).toString();
+  // withBase, because a deployment mounted at /tanteo/ must hand out a link
+  // that includes it. Without this the link 404s on the host that made it.
+  return new URL(withBase(shareUrlPath(readToken)), window.location.origin).toString();
 }
 
 export function ShareSheet({ open, onClose }: { open: boolean; onClose: () => void }): ReactNode {
   const { share, syncState, startSharing } = useTournament();
   const [creating, setCreating] = useState(false);
+  // null while we are still asking. A link is never offered before we know
+  // there is somewhere for it to point.
+  const [serverThere, setServerThere] = useState<boolean | null>(null);
   const [copied, setCopied] = useState(false);
   const [copyFailed, setCopyFailed] = useState(false);
 
   const url = share ? absoluteShareUrl(share.readToken) : null;
+
+  useEffect(() => {
+    if (!open || share) return;
+    let cancelled = false;
+    void shareServerAvailable().then((available) => {
+      if (!cancelled) setServerThere(available);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [open, share]);
 
   const create = async (): Promise<void> => {
     setCreating(true);
@@ -52,11 +70,25 @@ export function ShareSheet({ open, onClose }: { open: boolean; onClose: () => vo
       <div className="flex flex-col gap-4">
         <p className="text-[14px] leading-snug text-ink-muted">{t('share.body')}</p>
 
-        {!share ? (
+        {!share && serverThere === null ? <Note title={t('share.checking')} /> : null}
+
+        {!share && serverThere === false ? (
+          // Deliberately no button. Minting a link here would produce something
+          // that looks right, gets pasted into a group chat, and never loads.
+          <Note
+            tone="alert"
+            title={t('share.unavailableTitle')}
+            body={t('share.unavailableBody')}
+          />
+        ) : null}
+
+        {!share && serverThere === true ? (
           <Button variant="primary" full disabled={creating} onClick={() => void create()}>
             {creating ? t('share.creating') : t('share.start')}
           </Button>
-        ) : (
+        ) : null}
+
+        {share ? (
           <>
             {/*
               A real, selectable input rather than styled text: on a box without
@@ -90,7 +122,7 @@ export function ShareSheet({ open, onClose }: { open: boolean; onClose: () => vo
               <Note tone="alert" title={t('share.pushFailed')} />
             ) : null}
           </>
-        )}
+        ) : null}
       </div>
     </Sheet>
   );

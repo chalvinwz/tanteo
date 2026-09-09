@@ -10,7 +10,15 @@ import { VitePWA } from 'vite-plugin-pwa';
  * So the app shell is precached and the app boots from IndexedDB with no
  * network at all; the share server is only ever a write target.
  */
+/**
+ * `TANTEO_BASE` lets the same build serve from a subpath. GitHub Pages puts the
+ * app at /tanteo/, and the service worker scope, the manifest and every asset
+ * URL have to agree with that or the PWA will not install.
+ */
+const base = process.env['TANTEO_BASE'] ?? '/';
+
 export default defineConfig({
+  base,
   plugins: [
     react(),
     tailwindcss(),
@@ -22,23 +30,28 @@ export default defineConfig({
         short_name: 'tanteo',
         description: 'Padel Americano and Mexicano scorekeeping that survives a changing roster.',
         lang: 'en',
-        start_url: '/',
-        scope: '/',
+        start_url: base,
+        scope: base,
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#071A2C',
         theme_color: '#071A2C',
         icons: [
-          { src: '/icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
-          { src: '/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
-          { src: '/icon-maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+          { src: `${base}icon-192.png`, sizes: '192x192', type: 'image/png', purpose: 'any' },
+          { src: `${base}icon-512.png`, sizes: '512x512', type: 'image/png', purpose: 'any' },
+          {
+            src: `${base}icon-maskable-512.png`,
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'maskable',
+          },
         ],
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
         // The live view is a read of someone else's snapshot, so it may be
         // stale, but it must never be blank. Everything else is app shell.
-        navigateFallback: '/index.html',
+        navigateFallback: `${base}index.html`,
         navigateFallbackDenylist: [/^\/api\//],
       },
       devOptions: { enabled: false },

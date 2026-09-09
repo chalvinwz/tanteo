@@ -24,8 +24,35 @@ interface RouterValue extends RouteMatch {
 
 const RouterContext = createContext<RouterValue | null>(null);
 
+/**
+ * Where the app is mounted, with a trailing slash. Vite injects this from the
+ * build's `base`, so a GitHub Pages deployment at /tanteo/ and a self-hosted
+ * one at / run the same code.
+ */
+const BASE = import.meta.env.BASE_URL || '/';
+
+/**
+ * Strip the mount point, so route patterns stay written as if mounted at /.
+ * Takes the base explicitly so it can be tested without a build.
+ */
+export function stripBase(pathname: string, base: string = BASE): string {
+  if (base === '/') return pathname || '/';
+  const withoutSlash = base.replace(/\/$/, '');
+  if (pathname === withoutSlash) return '/';
+  if (pathname.startsWith(base)) return `/${pathname.slice(base.length)}`;
+  // A path outside the mount point is not ours to rewrite; hand it back and let
+  // it fall through to not-found rather than silently pretending it matched.
+  return pathname || '/';
+}
+
+/** Put the mount point back on, for anything the browser has to understand. */
+export function withBase(path: string, base: string = BASE): string {
+  if (base === '/') return path;
+  return `${base.replace(/\/$/, '')}${path.startsWith('/') ? path : `/${path}`}`;
+}
+
 function currentPath(): string {
-  return window.location.pathname || '/';
+  return stripBase(window.location.pathname);
 }
 
 /**
@@ -77,8 +104,11 @@ export function Router({
 
   const navigate = useCallback((to: string, options?: { replace?: boolean }) => {
     if (to === currentPath()) return;
-    if (options?.replace) window.history.replaceState(null, '', to);
-    else window.history.pushState(null, '', to);
+    // History takes a real URL, so the mount point goes back on here. Route
+    // patterns everywhere else stay base-free.
+    const href = withBase(to);
+    if (options?.replace) window.history.replaceState(null, '', href);
+    else window.history.pushState(null, '', href);
     setPath(to);
     // A route change is a new screen, so it starts at the top. Without this a
     // deep scroll on the board carries over onto the score screen.
@@ -116,7 +146,7 @@ export function Link({ to, replace, onClick, children, ...rest }: LinkProps): Re
   const navigate = useNavigate();
   return (
     <a
-      href={to}
+      href={withBase(to)}
       onClick={(event) => {
         onClick?.(event);
         if (event.defaultPrevented) return;

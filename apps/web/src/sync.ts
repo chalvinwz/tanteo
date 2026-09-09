@@ -1,5 +1,7 @@
 import type { TournamentState } from '@tanteo/engine';
 
+import { apiUrl } from './api.js';
+
 /**
  * Pushing the board to the share server.
  *
@@ -73,7 +75,7 @@ export function createSyncer(
     inFlight = true;
     emit({ status: 'pushing' });
     try {
-      const response = await doFetch(`/api/t/${readToken}`, {
+      const response = await doFetch(apiUrl(`api/t/${readToken}`), {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
